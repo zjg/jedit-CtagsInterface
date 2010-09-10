@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!DOCTYPE ACTIONS SYSTEM "actions.dtd">
+<ACTIONS>
+	<ACTION NAME="ctags-interface-add-dir" NO_REPEAT="TRUE">
+		<CODE>
+			ctagsinterface.main.CtagsInterfacePlugin.addFromFSB(
+				view, browser.getDirectory());
+		</CODE>
+	</ACTION>
+</ACTIONS>

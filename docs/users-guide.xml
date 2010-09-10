@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation='http://www.docbook.org/xsd/4.4/docbook.xsd' >
+<!-- :wrap=soft:maxLineLen=0: -->
+<title>jEdit CtagsInterface Plugin Guide</title>
+<bookinfo>
+ <authorgroup>
+  <author><firstname>Shlomy</firstname><surname>Reinstein</surname></author>
+ </authorgroup>
+
+ <legalnotice><title>Legal Notice</title>
+  <para>
+   Permission is granted to copy, distribute and/or modify this document
+   under the terms of the GNU Free Documentation License, Version 1.1 or
+   any later version published by the Free Software Foundation; with no
+   <quote>Invariant Sections</quote>, <quote>Front-Cover Texts</quote> or
+   <quote>Back-Cover Texts</quote>, each as defined in the license. A copy of
+   the license can be found in the file <filename>COPYING.DOC.txt</filename>
+   included with jEdit.
+  </para>
+
+ </legalnotice>
+ </bookinfo>
+
+ <chapter id="intro">
+  <title> Introduction </title>
+
+ <para>
+  The CtagsInterfacePlugin provides three dockables, a
+  <guilabel>Tag List</guilabel>, a <guilabel>Tag Preview</guilabel> and a
+  <guilabel>Progress</guilabel>. It also provides a number of operations that
+  allow you to quickly jump from one file location to another in the editor,
+  based on the context of the caret, and the indexed tag information obtained
+  from the <ulink url="http://ctags.sourceforge.net/">Exuberant Ctags</ulink>
+  executable. And finally, it provides a plugin interface through which other
+  jEdit plugins can easily access ctags data.
+ </para>
+ </chapter>
+
+ <chapter id="setup">
+ <title> Setup and Configuration </title>
+
+ <para>
+  CtagsInterface will happily index all files in your project or source
+  tree, unless you tell it otherwise.
+  Under <literal>Plugin Options - CtagsInterface - General</literal> you will
+  find a field for specifying
+  <emphasis role="bold">Ctags Invocation Options</emphasis>. By adding extra
+  options to this field, as shown below, you can specify that only certain
+  file types are scanned and indexed. Read the manual pages of exuberant ctags
+  for more information about the options available.
+ </para>
+
+ <literallayout> --languages=c,c++,java,python </literallayout>
+</chapter>
+ <chapter id="tagdbs">
+   <title> Tagging Projects and Source Trees </title>
+
+   <para>
+    CtagsInterface uses a Lucene index to keep track of tag data from multiple
+    projects and directory trees. The
+    <guimenuitem>Plugin Options - CtagsInterface</guimenuitem> provides
+    dialogs for adding projects and directory trees that should be indexed.
+   </para>
+
+   <para>
+    The first step is to add the projects and source trees that you want to be
+    tagged in the index. Tagging is done in the background, you can continue
+    working with jEdit meanwhile. The tagging progress is shown in the
+    <guilabel>Progress</guilabel> dockable, in a tab of a tabbed pane. When
+    done, you can lookup tags from the projects and source trees.
+   </para>
+
+   <para>
+    You can add projects two ways. From the ProjectViewer, right click on the
+    project and <guimenuitem>Add Project to index</guimenuitem>. Or, from
+    <guimenuitem>Plugin Options - CtagsInterface - Projects</guimenuitem>.
+   </para>
+
+   <para>
+    Similarly, you can add source trees from the
+    <guimenuitem>Plugin options - CtagsInterface - Source Trees</guimenuitem>,
+    or from the file system browser context menu:
+    <guimenuitem>Plugins - Add source tree to tag index</guimenuitem>.
+   </para>
+
+ </chapter>
+
+ <chapter id="lookup">
+   <title> Tag Lookup </title>
+
+   <para>
+    By default, tag lookup will search the entire tag index for matching tags,
+    including all added projects and source trees.
+   </para>
+
+   <para>
+    When using jEdit with ProjectViewer, you might be working with a set of
+    files, and have to frequently check another set of files that you are
+    reusing. This means that you will probably want to restrict your search
+    to only the projects and source trees that are related to your project.
+   </para>
+
+   <para>
+    By editing the properties of the current project, you can see a
+    <guilabel>Dependencies</guilabel> pane, which allows you to set the
+    related projects or source trees on an individual project basis. While
+    running the Tag Preview, or performing a Jump to Tag while working in a
+    project that has dependencies set, CtagsInterface should restrict its
+    searches to tag data from only those projects and directory trees.
+   </para>
+
+   <para>
+    This is especially useful in the case where there are many projects /
+    source trees indexed in the tags database that are not related to each
+    other.
+   </para>
+
+ </chapter>
+
+ <chapter id="actions">
+   <title> Actions </title>
+
+   <formalpara><title> Add tag File </title>
+   <para>
+    Adds an already generated ctags file to the database.
+   </para>
+   </formalpara>
+
+   <formalpara><title> Tag all projects </title>
+   <para>
+    This does exactly what it says: it goes through
+    <emphasis role="bold">every</emphasis> project that ProjectViewer knows
+    about, and tags their files, adding the tag data to the embedded database.
+   </para>
+   </formalpara>
+
+   <formalpara><title> Suggest completion options </title>
+   <para>
+    Suggests code-completion options from the tag database. This includes
+    completion of function calls, using SuperAbbrevs for conveniently
+    filling-in the parameter values.
+   </para>
+   </formalpara>
+
+   <section id="dynamic-actions">
+   <title> Dynamic Actions </title>
+
+   <para>
+    In addition to these built-in actions, CtagsInterface allows you to create
+    dynamic Actions, which are custom Lucene queries, which can be bound to
+    keyboard shortcuts. Each such Lucene query should retrieve a list of tags
+    from the database. There are 3 types of dynamic actions:
+    <orderedlist>
+    <listitem>
+     Jump to tag - execute the query and show the list of tags it retrieved
+     in the <guilabel>Tag List</guilabel> dockable, allowing you to jump to any
+     of them. In case the query returns a single tag, the dynamic action jumps
+     to it directly, without showing it in the dockable.
+    </listitem>
+    <listitem>
+     Search prefix - execute the query and show the "Prefix search" popup so
+     you can choose a tag from the query results using its prefix.
+    </listitem>
+    <listitem>
+     Search string - execute the query and show the "Prefix search" popup so
+     you can choose a tag from the query results using a substring.
+    </listitem>
+    </orderedlist>
+   </para>
+   <para>
+    To manage (create/delete/modify) dynamic actions, select the
+    <guilabel>Actions</guilabel> pane in the plugin options. To define a new
+    dynamic action, click the <guilabel>+</guilabel> button. You will be asked
+    to provide a name for the action and a Lucene query. The action name you
+    provide should not contain spaces, as it is used to define an ordinary
+    edit action. The Lucene query can make use of the following keywords:
+   <itemizedlist>
+    <listitem>
+     <para>
+      <guilabel>{tag}</guilabel>: The tag being looked up
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      <guilabel>{project}</guilabel>: The name of the active project
+     </para>
+    </listitem>
+   </itemizedlist>
+   Here are a few examples:
+   <itemizedlist>
+      <listitem><para>_name:{tag} AND kind:function AND origin:{project}
+	  </para></listitem>
+      <listitem><para>_name:{tag} AND kind:prototype AND origin:{project}
+	  </para></listitem>
+   </itemizedlist>
+   </para>
+
+   </section>
+
+ </chapter>
+
+ <chapter id="dockables">
+   <title> CtagsInterface Dockables </title>
+
+   <para>
+    There are three dockables that you can use from CtagsInterface. 
+   </para>
+
+   <formalpara> <title> Tag List </title>
+   <para>
+    When <action>jump to tag</action> is invoked, if there is more than one
+    possible match, the Tag List dockable is displayed, where you can preview
+    and select the choices of jump locations.
+   </para>
+
+   </formalpara>
+   <formalpara> <title> Tag Preview </title>
+   <para>
+    This dockable is updated automatically (after a configurable delay)
+    whenever the caret is moved over a location that is a known symbol in the
+    tag index.
+   </para>
+
+   </formalpara>
+   <formalpara> <title> Progress </title>
+   <para>
+    This dockable shows the progress of tagging activities in a tabbed pane.
+    Each activity has its own tab. By default, a tab closes automatically a
+    few seconds after the activity is over, but you can configure this in the
+    <guilabel>General </guilabel> option pane.
+    You can close a tab manually by middle-clicking the tab title or clicking
+    the <guilabel>Close</guilabel> button in the dockable.
+   </para>
+
+   </formalpara>
+
+ </chapter>
+
+ <chapter id="pluginservices">
+   <title> Services to other plugins </title>
+   <para>
+    CtagsInterface also offers services to other plugins, such as ClassBrowser
+    and CodeHelper:
+   </para>
+
+   <orderedlist>
+   <listitem><para> Queries of the tag index</para></listitem>
+   <listitem><para> Jumping to tags </para></listitem>
+   </orderedlist>
+
+   <para>
+    Since the CtagsInterface manages the tag information and runs ctags, other
+    plugins do not need to call/depend on ctags directly. This also means that
+    in the future, the CtagsInterface may be extended to work with other
+    code-indexing tools.
+   </para>
+
+  </chapter>
+
+<appendix id="changelog">
+ <title> Changelog </title>
+  <para> For a list of changes in this plugin, see the
+  <ulink url="docs/CHANGES.txt">change log</ulink>.
+  </para>
+
+
+</appendix>
+
+
+</book>

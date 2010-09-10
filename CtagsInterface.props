@@ -1,0 +1,151 @@
+plugin.ctagsinterface.main.CtagsInterfacePlugin.activate=startup
+
+# general plugin information
+plugin.ctagsinterface.main.CtagsInterfacePlugin.name=CtagsInterface
+plugin.ctagsinterface.main.CtagsInterfacePlugin.author=Shlomy Reinstein
+plugin.ctagsinterface.main.CtagsInterfacePlugin.version=2.0
+plugin.ctagsinterface.main.CtagsInterfacePlugin.description=\
+	CtagsInterface provides common Ctags services to interested plugins.
+
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.0=jdk 1.5
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.1=jedit 04.04.01.00
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.2=optional plugin projectviewer.ProjectPlugin 2.9.0.0
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.3=plugin SuperAbbrevsPlugin 0.32
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.4=optional plugin plugin.ise.plugin.nav.NavigatorPlugin 2.2.0.0
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.5=plugin gatchan.jedit.lucene.LucenePlugin 2.5
+
+plugin.ctagsinterface.main.CtagsInterfacePlugin.docs=index.html
+
+# action labels
+ctags-interface-add-file.label=Add tag file...
+ctags-interface-print-tags.label=Print tags
+ctags-interface-print-tags-containing.label=Print tags with substring...
+ctags-interface-jump-to-tag.label=Jump to tag
+ctags-interface-search-tag-by-substring.label=Search for a tag with substring...
+ctags-interface-search-tag-by-prefix.label=Search for a tag with prefix...
+ctags-interface-tag-all-projects.label=Tag all projects
+ctags-interface-complete-from-db.label=Suggest completion options
+ctags-interface-add-current-file.label=Tag current file
+ctags-interface-run-query.label=Run a query (for debugging)
+ctags-interface-show-query-dialog.label=Show query dialog (for debugging)
+
+# menu items
+plugin.ctagsinterface.main.CtagsInterfacePlugin.menu=\
+	ctags-interface-add-file \
+	ctags-interface-jump-to-tag \
+	ctags-interface-search-tag-by-prefix \
+	ctags-interface-search-tag-by-substring \
+	ctags-interface-preview \
+	ctags-interface-complete-from-db \
+	- \
+	ctags-interface-browser \
+	- \
+	ctags-interface-tag-all-projects \
+	- \
+	ctags-interface-add-current-file \
+	- \
+	ctags-interface-run-query \
+	ctags-interface-show-query-dialog
+
+# option panes
+plugin.ctagsinterface.main.CtagsInterfacePlugin.option-group=CtagsInterface-General \
+	CtagsInterface-Actions \
+	CtagsInterface-Dirs \
+	CtagsInterface-Projects
+options.CtagsInterface-General.label=General
+options.CtagsInterface-General.code=new ctagsinterface.options.GeneralOptionPane();
+options.CtagsInterface-Actions.label=Actions
+options.CtagsInterface-Actions.code=new ctagsinterface.options.ActionsOptionPane();
+options.CtagsInterface-Dirs.label=Source trees
+options.CtagsInterface-Dirs.code=new ctagsinterface.options.DirsOptionPane();
+options.CtagsInterface-Projects.label=Projects
+options.CtagsInterface-Projects.code=new ctagsinterface.options.ProjectsOptionPane();
+
+# dockables
+ctags-interface-tag-list.title=Tag List
+ctags-interface-tag-list.label=Tag List
+ctags-interface-preview.title=Tag Preview
+ctags-interface-preview.label=Tag Preview
+ctags-interface-progress.title=Tagging Progress
+ctags-interface-progress.label=Tagging Progress
+ctags-interface-browser.title=Tag Index browser
+ctags-interface-browser.label=Tag Index browser
+
+# docs
+#plugin.ctagsinterface.main.CtagsInterfacePlugin.docs=index.html
+
+# options
+options.CtagsInterface.ctags=ctags
+options.CtagsInterface.cmd=--fields\=+anzKiS
+options.CtagsInterface.pattern=\\w+
+
+# messages
+messages.CtagsInterface.ctags=Ctags executable path:
+messages.CtagsInterface.cmd=Ctags invocation options:
+messages.CtagsInterface.pattern=Tag pattern (to extract tag at caret):
+messages.CtagsInterface.updateOnLoad=Refresh file tags when loaded
+messages.CtagsInterface.updateOnSave=Refresh file tags when saved
+messages.CtagsInterface.previewTitle=Tag Preview dockable
+messages.CtagsInterface.previewVerticalSplit=Vertical split
+messages.CtagsInterface.previewToolbar=Show toolbar
+messages.CtagsInterface.previewWrap=Use soft wrap
+messages.CtagsInterface.previewDelay=Delay before tag preview (in milliseconds):
+messages.CtagsInterface.copyPreviewSelection=Copy (Ctrl-C)
+messages.CtagsInterface.openInEditor=Open in editor (double-click)
+messages.CtagsInterface.actions=Actions:
+messages.CtagsInterface.actionEditorTitle=Action Editor
+messages.CtagsInterface.actionName=Action name:
+messages.CtagsInterface.luceneQuery=Lucene query:
+messages.CtagsInterface.queryType=Query Type:
+messages.CtagsInterface.callImmediately=Call query immediately (without waiting for input):
+messages.CtagsInterface.dirs=Source trees:
+messages.CtagsInterface.archives=Source archives:
+messages.CtagsInterface.projects=Projects:
+messages.CtagsInterface.trackProjectList=Automatically add new projects and remove deleted projects
+messages.CtagsInterface.autoUpdateProjects=Automatically update tags when projects are changed
+messages.CtagsInterface.searchScope=Tag search scope
+messages.CtagsInterface.searchGlobally=Global
+messages.CtagsInterface.searchActiveProjectOnly=Active project only
+messages.CtagsInterface.searchActiveProjectAndDeps=Active project and its dependencies
+messages.CtagsInterface.searchActiveProjectFirst=Active project first, and only if not found, search in other sources.
+messages.CtagsInterface.showTooltips=Show tag tooltips
+messages.CtagsInterface.completeDesc=Show tag description in code completion
+messages.CtagsInterface.checkCtags=Check path
+messages.CtagsInterface.badCtagsPath=Ctags path does not exist or is not an executable file 
+messages.CtagsInterface.goodCtagsPath=Ctags path is okay
+messages.CtagsInterface.noPVSupport=ProjectViewer integration not initialized. \
+	Please make sure ProjectViewer is loaded and then restart CtagsInterface.
+messages.CtagsInterface.tagging=Running Ctags
+messages.CtagsInterface.parsing=Parsing tag file
+messages.CtagsInterface.autoCloseProgress=Automatically close progress tab when tagging is over
+
+# projectviewer option pane
+plugin.projectviewer.ctagsinterface.main.CtagsInterfacePlugin.option-pane=CtagsInterface-ProjectDependencies
+
+# file system browser context menu item
+plugin.ctagsinterface.main.CtagsInterfacePlugin.browser-menu-item=ctags-interface-add-dir
+ctags-interface-add-dir.label=Add source tree to tag index
+
+options.CtagsInterface-ProjectDependencies.label=Dependencies
+options.CtagsInterface-ProjectDependencies.code=new ctagsinterface.projects.ProjectDependencies()
+
+# icons
+options.CtagsInterface.icons.kind.class=class.png
+options.CtagsInterface.icons.kind.field=variable.png
+options.CtagsInterface.icons.kind.function=function.png
+options.CtagsInterface.icons.kind.macro=macro.png
+options.CtagsInterface.icons.kind.member=variable.png
+options.CtagsInterface.icons.kind.method=function.png
+options.CtagsInterface.icons.kind.package=package.png
+options.CtagsInterface.icons.kind.procedure=function.png
+options.CtagsInterface.icons.kind.prototype=prototype.png
+options.CtagsInterface.icons.kind.struct=struct.png
+options.CtagsInterface.icons.kind.typedef=typedef.png
+options.CtagsInterface.icons.kind.union=union.png
+options.CtagsInterface.icons.kind.variable=variable.png
+options.CtagsInterface.icons.kind.enum=enum.png
+options.CtagsInterface.icons.kind.enumerator=enumerator.png
+# Perl icons...
+options.CtagsInterface.icons.kind.subroutine=function.png
+options.CtagsInterface.icons.kind.constant=macro.png
+options.CtagsInterface.icons.kind.label=variable.png

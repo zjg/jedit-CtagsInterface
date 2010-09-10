@@ -1,0 +1,11 @@
+<p>
+CtagsInterface provides source code tagging functionality using the "Exuberant Ctags" tool (http://ctags.sourceforge.net). It automatically invokes Ctags on a list of projects (or source code trees) and keeps the tag information in a HSQL database ( http://hsqldb.org). It can automatically keep track of modifications to the projects (or source trees), re-run Ctags over the modified files and keep the database updated.
+The plugin provides a "Follow tag" function which can be used to follow the tag under the caret, and a "Tag preview" dockable which tracks the caret location and shows the definition of the tag under the caret automatically.
+</p>
+<p>
+In addition, CtagsInterface provides a convenient API to access the tag database, so that the tag information can be shared with other plugins as well, and to eliminate the need for other plugins to interface with Ctags directly.
+</p>
+<p>
+CtagsInterface is highly-configurable and can make use of all the information provided by Ctags. All tag extensions are inserted into the database and made available to other plugins by the API.
+</p>
+

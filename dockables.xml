@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!-- $Id: dockables.xml 10867 2007-10-10 13:01:00Z shlomy $ -->
+
+<!DOCTYPE DOCKABLES SYSTEM "dockables.dtd">
+
+<DOCKABLES>
+	<DOCKABLE NAME="ctags-interface-tag-list" MOVABLE="TRUE">
+		new ctagsinterface.dockables.TagList(view);
+	</DOCKABLE>
+	<DOCKABLE NAME="ctags-interface-preview" MOVABLE="TRUE">
+		new ctagsinterface.dockables.Preview(view);
+	</DOCKABLE>
+	<DOCKABLE NAME="ctags-interface-progress" MOVABLE="TRUE">
+		new ctagsinterface.dockables.Progress(view);
+	</DOCKABLE>
+	<DOCKABLE NAME="ctags-interface-browser" MOVABLE="TRUE">
+		new ctagsinterface.dockables.TagBrowser(view);
+	</DOCKABLE>
+</DOCKABLES>
+
+<!-- :noTabs=false:lineSeparator=\r\n:tabSize=4:folding=none: -->

@@ -1,0 +1,42 @@
+To do:
+- Update user guide after switch to Lucene.
+- Show progress during origin tagging.
+- Use "-L" or "--filter" parameter to Ctags to use a single process for
+  each buffer save/load.
+- Option for case-insensitive tag name DB queries. (also for the preview pane) 
+- Option to include dependencies in active project tag searches.
+- Easy way to add project dependencies to tag index.
+- Handle long delay before background tagging begins for source trees or projects.
+- Handle long delay during startup because of hsqldb.
+
+Done:
++ Switch from using a relational database to Lucene.
++ Add project dependency properties. (To be integrated into PV later)
++ An action to add all existing projects to the DB.
++ An option to track project creation/removal and update the DB.
++ When jumping to a tag, verify that the line exists. The tag DB may be outdated.
++ Handle case when there is no active project when tag search is limited to active project.
+  (e.g. group of projects is selected instead of an active project)
++ Preview dockable:
+  + Support for multiple text areas (split edit pane)
+  + Move tag query + file loading to worker thread
++ Context menu items to project viewer to add/remove the selected project.
++ Create an auto-preview dockable for definitions of the identifier under caret.
+  Handle multiple definitions as a list in that dockable.
++ Project support:
+  + Option pane in the plugin to define "watched" projects.
+  + Monitor watched projects for changes (add/remove files) and auto-update DB.
+  + Update DB when files belonging to a watched project are saved/loaded.
+  + Option to limit searches to active project.
+  + Actions option pane: SQL query "Jump to tag" actions.
+  + Change column names to A_<attribute name>. Some attributes are also
+    reserved words in SQL and cannot be used as column names (e.g. union).
+  + Redesign DB tables.
+  + Option to limit tag searches to active project.
++ Auto-update DB when:
+  + Watched buffer is saved
+  + Watched buffer is loaded
+  + Files are added to / removed from watched projects.
++ Add project name or id to each tag in the table.
++ Update to released PV: tags/pv_2_1_3_7
+

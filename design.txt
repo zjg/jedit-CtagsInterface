@@ -1,0 +1,86 @@
+DB of tags containing 4 tables:
+
+ORIGINS: Table of source trees / projects / tag files configured using the option panes
+  ID: Identity
+  NAME: Project name / Source tree path / Tag file path
+  TYPE: Origin type (PROJECT/TREE/TAGFILE)
+
+FILES: Table of source files containing tags
+  ID: Identity
+  FILE: Path to source file
+  
+TAGS: Table of tags
+  TAG: Tag name
+  FILE_ID: ID of file defining tag (from FILES table)
+  PATTERN: Pattern for finding tag
+  <Extensions>: Tag extensions, each column named A_{extension name}.
+
+MAP: Table of source file origins
+  FILE_ID: ID of source file (from FILES table)
+  ORIGIN_ID: ID of origin (from ORIGINS table)
+  
+Use cases:
++ Checking if a saved/loaded buffer needs to be updated:
+  Check if:
+  SELECT TOP 1 FILE FROM FILES WHERE FILE={path}
+  Returns non-empty result.
++ Updating a saved/loaded buffer:
+  id = SELECT ID FROM FILES WHERE FILE={path}
+  DELETE FROM TAGS WHERE ID={id}
+  Run Ctags on buffer
+  For each tag:
+  INSERT INTO TAGS (FILE_ID, ...) VALUES ({id}, ...)
++ Adding a temp tag file:
+  For each tag:
+  id = SELECT ID FROM FILES WHERE FILE={path}
+  if (id < 0) {
+    INSERT INTO FILES (FILE) VALUES {path}
+    id = SELECT ID FROM FILES WHERE FILE={path}
+    fileSet.add(path)
+  } else {
+    if (! fileSet.contains(path)) {
+  	  DELETE FROM TAGS WHERE FILE_ID={id}
+  	  fileSet.add(path)
+  	}
+  }
+  INSERT INTO TAGS (TAG, FILE_ID, ...) VALUES {tag}, {id}, ...
++ Adding a source tree:
+  INSERT INTO ORIGINS (NAME, TYPE) VALUES {tree}, 'SourceTree'
+  originId = SELECT ID FROM ORIGINS WHERE TYPE='SourceTree' and NAME={tree}
+  Run "ctags -R" on source tree
+  For each tag: Run procedure "Adding a temp tag file:", and then:
+  For each element in fileSet:
+  id = SELECT ID FROM FILES WHERE FILE={path}
+  INSERT INTO MAP (FILE_ID, ORIGIN_ID) VALUES {id}, {originId}
++ Removing a source tree:
+  originId = SELECT ID FROM ORIGINS WHERE TYPE='SourceTree' and NAME={tree}
+  DELETE FROM ORIGINS WHERE ID={originId}
+  DELETE FROM MAP WHERE ORIGIN_ID={originId}
+  DELETE FROM TAGS WHERE FILE_ID IN (
+    SELECT ID FROM FILES WHERE NOT EXISTS (SELECT FILE_ID FROM MAP WHERE ID=FILE_ID))
+  DELETE FROM FILES WHERE NOT EXISTS (SELECT FILE_ID FROM MAP WHERE ID=FILE_ID)
++ Updating a source tree:
+  Same as removing and then adding, except no changes to the ORIGINS table (same ID used).
++ Adding a project:
+  INSERT INTO ORIGINS (NAME, TYPE) VALUES {project}, 'Project'
+  originId = SELECT ID FROM ORIGINS WHERE TYPE='Project' and NAME={project}
+  Run "ctags" on project files
+  Rest is the same as adding a source tree.
++ Removing a project:
+  originId = SELECT ID FROM ORIGINS WHERE TYPE='Project' and NAME={project}
+  Rest is the same as removing a source tree.
++ Updating a project:
+  Same as updating a source tree.
++ Finding a tag by name:
+  SELECT * FROM TAGS, FILES WHERE TAGS.FILE_ID=FILES.ID
++ Finding a tag from the active project:
+  SELECT * FROM TAGS, FILES WHERE TAGS.TAG={tag} TAGS.FILE_ID=FILES.ID AND EXISTS
+    (SELECT FILE_ID FROM MAP WHERE MAP.FILE_ID=FILES.ID AND MAP.ORIGIN_ID=
+      (SELECT ID FROM ORIGINS WHERE NAME={project} AND TYPE='Project'))
+  or:
+  SELECT * FROM TAGS, FILES, MAP, PROJECTS WHERE
+    TAGS.TAG={tag} AND TAGS.FILE_ID=FILES.ID AND FILES.ID=MAP.FILE_ID AND
+    MAP.ORIGIN_ID=ORIGINS.ID AND ORIGINS.TYPE='Project' AND ORIGINS.NAME={project}
+
+
+    

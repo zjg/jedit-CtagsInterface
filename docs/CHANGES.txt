@@ -1,0 +1,66 @@
+Changes:
+
+Version 2.0:
+- Changed CtagsInterface to use a Lucene index for the tag information instead
+  of a relational database. This was done mainly to improve performance of
+  queries that need to check substrings of the values in the database.
+  Switching to Lucene also allows fuzzy tag queries.
+  As a result:
+  - Dynamic action queries (which used to be in SQL) need to be converted
+    manually to Lucene queries, e.g.:
+    _name:{tag} AND kind:function AND origin:PROJECT\:{project}
+  - All database-related configuration was removed, including the "Change
+    database settings" dialog.
+- Added progress indication while tagging. A new dockable shows the Ctags
+  verbose output. Each tagging task has its own tab in the dockable, and there
+  is an option to automatically close the tab when the tagging is over.
+- All tagging is done in the background, so the option for background tagging
+  was removed.
+- Dynamic action queries can now be used also for tag lookups by prefix or
+  substring. Instead of searching for all tags with a specific prefix or
+  substring, the search can be limited to the results of the action query.
+
+Version 1.1:
+- Fixed an NPE when the tag database is not configured correctly
+  or not installed correctly.
+- Added an action for adding the current file to the tag DB.
+- Updated the plugin to use the new edit bus annotated handlers.
+- Fixed a bug when jumping to a file which has changed since it was last
+  tagged. If the file has changed, and the "update on load" option is set,
+  the tags will be automatically updated when the file is loaded, however
+  the jumping will be based on the outdated tag. So, when jumping to a tag
+  when this option is set, first open the file and wait for the tags to be
+  updated, then rerun the query (complex, because it needs to find the same
+  tag exactly, if the user selected one of several), and jump to the updated
+  version.
+- Fixed the query for the "quick search tag" dialog.
+- Removed the lousy attempt to provide "completion by context".
+- Better integration with Navigator - when jumping to a tag in
+  another buffer, prevent Navigator from recording the initial buffer position
+  (either the beginning of the buffer or the position when the buffer was last
+  closed), so it only records the positions before and after the jump.
+  Navigator is now an optional dependency of CtagsInterface.
+- Prevent adding the same origin record twice to the ORIGINS table.
+- Fixed NPEs when the project listener provides null lists for
+  added/removed files.
+- Fixed bug ##2843099 - NPE from the plugin's stop() method.
+- Fixes for including plugin documentation in jEdit help.
+- Tag completion: Allowing added characters to filter out the
+  completion tags, and backspace to extend the completion tags up to the
+  original prefix.
+- Do not cause ProjectViewer to be loaded due to checking the type
+  of edit bus messages. Loading PV while checking the edit bus message causes a
+  ClassCircularityError because JARClassLoader activates the plugin, and during
+  activation PV sends another edit bus message.
+- Fixed bug #2828947: NPE on clean setup.
+- Tag list dockable: After filtering the tag list, if a single tag
+  remains, jump to it directly.
+
+Version 1.0: First release.
+
+Version 0.2: Requires jEdit 4.3pre13, Java 1.5, and ProjectViewer 2.9.
+  Database profiles, and support for h2, mysql, and perhaps other databases.
+  Support for latest ProjectViewer
+
+Version 0.1: Requires jedit 4.3pre12, Java 1.5, and ProjectViewer 2.1.3
+  (optional).  Pre release

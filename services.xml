@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE SERVICES SYSTEM "services.dtd">
+
+<SERVICES>
+	<SERVICE CLASS="projectviewer.action.Action" NAME="Add to database">
+		new ctagsinterface.projects.ProjectAddAction();
+	</SERVICE>
+	<SERVICE CLASS="projectviewer.action.Action" NAME="Remove from database">
+		new ctagsinterface.projects.ProjectRemoveAction();
+	</SERVICE>
+	<SERVICE CLASS="projectviewer.config.OptionsService" NAME="CtagsInterface">
+		new ctagsinterface.projects.ProjectDependencies.ProjectDependencyOptionService();
+	</SERVICE>
+</SERVICES>
