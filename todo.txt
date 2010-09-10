@@ -1,15 +1,15 @@
 To do:
 - Update user guide after switch to Lucene.
-- Show progress during origin tagging.
 - Use "-L" or "--filter" parameter to Ctags to use a single process for
   each buffer save/load.
-- Option for case-insensitive tag name DB queries. (also for the preview pane) 
-- Option to include dependencies in active project tag searches.
 - Easy way to add project dependencies to tag index.
-- Handle long delay before background tagging begins for source trees or projects.
-- Handle long delay during startup because of hsqldb.
 
 Done:
++ Handle long delay before background tagging begins for source trees or projects.
++ Handle long delay during startup because of hsqldb.
++ Option to include dependencies in active project tag searches.
++ Option for case-insensitive tag name DB queries. (also for the preview pane) 
++ Show progress during origin tagging.
 + Switch from using a relational database to Lucene.
 + Add project dependency properties. (To be integrated into PV later)
 + An action to add all existing projects to the DB.
