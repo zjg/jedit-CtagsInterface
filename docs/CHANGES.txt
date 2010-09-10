@@ -11,6 +11,9 @@ Version 2.0:
     _name:{tag} AND kind:function AND origin:PROJECT\:{project}
   - All database-related configuration was removed, including the "Change
     database settings" dialog.
+  - The old tag database is no longer used. You can delete it by deleting
+    the "CtagsInterface" directory under the jEdit setting directory, and
+	you need to create the tag database from scratch using the new version.
 - Added progress indication while tagging. A new dockable shows the Ctags
   verbose output. Each tagging task has its own tab in the dockable, and there
   is an option to automatically close the tab when the tagging is over.
