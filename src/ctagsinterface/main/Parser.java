@@ -46,15 +46,29 @@ public class Parser
 		if (logger != null)
 			logger.beginTask(jEdit.getProperty(PARSING));
 		CtagsInterfacePlugin.getIndex().startActivity();
+		int nLines = 0;
 		try
 		{
+			// First, check the number of lines in the output to provide progress
+			if (logger != null)
+			{
+				while (in.readLine() != null)
+					nLines++;
+				in.close();
+				logger.setProgressParams(0, nLines);
+				in = new BufferedReader(new FileReader(tagFile));
+			}
 			String line;
+			int parsed = 0;
 			while ((line = in.readLine()) != null)
 			{
 				Tag t = parse(line);
 				if (t == null)
 					continue;
 				handler.processTag(t);
+				parsed++;
+				if (logger != null)
+					logger.setProgress(parsed);
 			}
 		}
 		catch (IOException e) { e.printStackTrace(); }

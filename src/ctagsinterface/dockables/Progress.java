@@ -11,6 +11,7 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
@@ -59,7 +60,26 @@ public class Progress extends JPanel
 				getTab(logger).append(s);
 			}
 		});
-
+	}
+	public void setProgressParams(final Logger logger, final int min, final int max)
+	{
+		ThreadUtilities.runInDispatchThread(new Runnable()
+		{
+			public void run()
+			{
+				getTab(logger).setProgressParams(min, max);
+			}
+		});
+	}
+	public void setProgress(final Logger logger, final int value)
+	{
+		ThreadUtilities.runInDispatchThread(new Runnable()
+		{
+			public void run()
+			{
+				getTab(logger).setProgress(value);
+			}
+		});
 	}
 	private ProgressTab getTab(Logger logger)
 	{
@@ -114,6 +134,7 @@ public class Progress extends JPanel
 		private JButton close;
 		private JLabel status;
 		private Timer timer = null;
+		JProgressBar bar;
 
 		public ProgressTab(Logger logger)
 		{
@@ -121,7 +142,7 @@ public class Progress extends JPanel
 			setLayout(new BorderLayout());
 			JPanel top = new JPanel();
 			add(top, BorderLayout.NORTH);
-			top.setLayout(new BorderLayout());
+			top.setLayout(new BorderLayout(10, 5));
 			close = new JButton("Close");
 			top.add(close, BorderLayout.EAST);
 			close.addActionListener(new ActionListener()
@@ -132,7 +153,11 @@ public class Progress extends JPanel
 				}
 			});
 			status = new JLabel(IDLE);
-			top.add(status, BorderLayout.CENTER);
+			top.add(status, BorderLayout.WEST);
+			bar = new JProgressBar();
+			top.add(bar, BorderLayout.CENTER);
+			bar.setVisible(false);
+			bar.setStringPainted(true);
 			textArea = new JTextArea();
 			add(new JScrollPane(textArea), BorderLayout.CENTER);
 			timer = new Timer(5000, new ActionListener()
@@ -178,6 +203,16 @@ public class Progress extends JPanel
 			status.setText(IDLE);
 			if (GeneralOptionPane.getAutoCloseProgress())
 				timer.start();
+		}
+		public void setProgressParams(int min, int max)
+		{
+			bar.setVisible(true);
+			bar.setMinimum(min);
+			bar.setMaximum(max);
+		}
+		public void setProgress(int value)
+		{
+			bar.setValue(value);
 		}
 	}
 }

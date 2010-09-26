@@ -31,4 +31,12 @@ public class Logger
 	{
 		progress.add(this, s);
 	}
+	public void setProgressParams(int min, int max)
+	{
+		progress.setProgressParams(this, min, max);
+	}
+	public void setProgress(int value)
+	{
+		progress.setProgress(this, value);
+	}
 }
