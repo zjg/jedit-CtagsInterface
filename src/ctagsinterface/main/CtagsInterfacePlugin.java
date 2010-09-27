@@ -25,6 +25,7 @@ import org.gjt.sp.jedit.View;
 import org.gjt.sp.jedit.jEdit;
 import org.gjt.sp.jedit.gui.DockableWindowManager;
 import org.gjt.sp.jedit.gui.StatusBar;
+import org.gjt.sp.jedit.io.VFSManager;
 import org.gjt.sp.jedit.msg.PositionChanging;
 import org.gjt.sp.jedit.textarea.JEditTextArea;
 import org.gjt.sp.util.Task;
@@ -467,7 +468,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 			System.err.println("Unable to open: " + file);
 			return;
 		}
-		ThreadUtilities.runInDispatchThread(new Runnable() {
+		VFSManager.runInAWTThread(new Runnable() {
 			public void run() {
 				try {
 					view.getTextArea().setCaretPosition(
@@ -550,7 +551,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 			System.err.println("Unable to open: " + file);
 			return;
 		}
-		ThreadUtilities.runInDispatchThread(new Runnable() {
+		VFSManager.runInAWTThread(new Runnable() {
 			public void run() {
 				view.getTextArea().setCaretPosition(offset);
 				if (p != null)
