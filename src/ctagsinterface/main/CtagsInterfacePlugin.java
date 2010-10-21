@@ -435,11 +435,11 @@ public class CtagsInterfacePlugin extends EditPlugin
 
 	// Jumps to the specified location
 	public static void jumpTo(final View view, final String file,
-		final int line)
+		final int line, final boolean sendAutoJumpStarted)
 	{
 		Runnable r = new Runnable() {
 			public void run() {
-				jumpToDirect(view, file, line);
+				jumpToDirect(view, file, line, sendAutoJumpStarted);
 			}
 		};
 		if (SwingUtilities.isEventDispatchThread())
@@ -449,14 +449,11 @@ public class CtagsInterfacePlugin extends EditPlugin
 	}
 
 	private static void jumpToDirect(final View view, String file,
-		final int line)
+		final int line, boolean sendAutoJumpStarted)
 	{
-		final EditPlugin p = jEdit.getPlugin("plugin.ise.plugin.nav.NavigatorPlugin",false);
-		if (p != null)
-		{
-			AutoJump aj = new AutoJump(view, AutoJump.STARTED);
-			EditBus.send(aj);
-		}
+		final EditPlugin p = jEdit.getPlugin("ise.plugin.nav.NavigatorPlugin",false);
+		if (sendAutoJumpStarted && (p != null))
+			sendAutoJump(view, AutoJump.STARTED);
 		Buffer b = view.getBuffer();
 		if (b == null || (! b.getPath().equals(file)) ||
 			(view.getTextArea().getCaretLine() != line - 1))
@@ -474,10 +471,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 					view.getTextArea().setCaretPosition(
 						view.getTextArea().getLineStartOffset(line - 1));
 					if (p != null)
-					{
-						AutoJump aj = new AutoJump(view, AutoJump.ENDED);
-						EditBus.send(aj);
-					}
+						sendAutoJump(view, AutoJump.ENDED);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -498,9 +492,13 @@ public class CtagsInterfacePlugin extends EditPlugin
 		// the buffer is loaded, so delay the jump. Otherwise, jump now.
 		if ((! GeneralOptionPane.getUpdateOnLoad()) || (jEdit.getBuffer(path) != null))
 		{
-			jumpTo(view, path, tag.getLine());
+			jumpTo(view, path, tag.getLine(), true);
 			return;
 		}
+		// Send the "AutoJump.STARTED" event before opening the new buffer
+		final EditPlugin p = jEdit.getPlugin("ise.plugin.nav.NavigatorPlugin",false);
+		if (p != null)
+			sendAutoJump(view, AutoJump.STARTED);
 		final long time = System.currentTimeMillis();
 		final Buffer buffer = jEdit.openFile(view, path);
 		if (buffer == null)
@@ -521,12 +519,17 @@ public class CtagsInterfacePlugin extends EditPlugin
 					}
 				}
 				Tag updatedTag = getUpdatedTag(tag);
-				jumpTo(view, path, updatedTag.getLine());
+				jumpTo(view, path, updatedTag.getLine(), false);
 			}
 		};
 		Thread bgTask = new Thread(delayJump);
 		bgTask.start();
 
+	}
+
+	private static void sendAutoJump(final View view, Object what) {
+		AutoJump aj = new AutoJump(view, what);
+		EditBus.send(aj);
 	}
 	private static Tag getUpdatedTag(Tag tag)
 	{
@@ -540,12 +543,9 @@ public class CtagsInterfacePlugin extends EditPlugin
 	public static void jumpToOffset(final View view, String file,
 		final int offset)
 	{
-		final EditPlugin p = jEdit.getPlugin("plugin.ise.plugin.nav.NavigatorPlugin",false);
+		final EditPlugin p = jEdit.getPlugin("ise.plugin.nav.NavigatorPlugin",false);
 		if (p != null)
-		{
-			AutoJump aj = new AutoJump(view, AutoJump.STARTED);
-			EditBus.send(aj);
-		}
+			sendAutoJump(view, AutoJump.STARTED);
 		Buffer buffer = jEdit.openFile(view, file);
 		if (buffer == null) {
 			System.err.println("Unable to open: " + file);
@@ -555,10 +555,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 			public void run() {
 				view.getTextArea().setCaretPosition(offset);
 				if (p != null)
-				{
-					AutoJump aj = new AutoJump(view, AutoJump.ENDED);
-					EditBus.send(aj);
-				}
+					sendAutoJump(view, AutoJump.ENDED);
 			}
 		});
 	}

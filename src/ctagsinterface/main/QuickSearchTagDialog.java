@@ -236,8 +236,8 @@ public class QuickSearchTagDialog extends JDialog {
 			Rectangle bounds = getBounds();
 			window.setLocation(bounds.x, bounds.y + bounds.height);
 			GUIUtilities.requestFocus(this, name);
-			window.setVisible(false);	// Initially hide the tag list window
 		}
+		window.setVisible(false);	// Initially hide the tag list window, even if b is true
 		super.setVisible(b);
 	}
 
