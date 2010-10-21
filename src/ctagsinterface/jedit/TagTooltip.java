@@ -91,7 +91,6 @@ public class TagTooltip extends TextAreaExtension
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public String getToolTipText(final int x, final int y) {
 		int offset = textArea.xyToOffset(x, y);
