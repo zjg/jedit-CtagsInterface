@@ -453,7 +453,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 	{
 		final EditPlugin p = jEdit.getPlugin("ise.plugin.nav.NavigatorPlugin",false);
 		if (sendAutoJumpStarted && (p != null))
-			sendAutoJump(view, AutoJump.STARTED);
+			AutoJumpSender.sendAutoJump(view, AutoJump.STARTED);
 		Buffer b = view.getBuffer();
 		if (b == null || (! b.getPath().equals(file)) ||
 			(view.getTextArea().getCaretLine() != line - 1))
@@ -471,7 +471,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 					view.getTextArea().setCaretPosition(
 						view.getTextArea().getLineStartOffset(line - 1));
 					if (p != null)
-						sendAutoJump(view, AutoJump.ENDED);
+						AutoJumpSender.sendAutoJump(view, AutoJump.ENDED);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -498,7 +498,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 		// Send the "AutoJump.STARTED" event before opening the new buffer
 		final EditPlugin p = jEdit.getPlugin("ise.plugin.nav.NavigatorPlugin",false);
 		if (p != null)
-			sendAutoJump(view, AutoJump.STARTED);
+			AutoJumpSender.sendAutoJump(view, AutoJump.STARTED);
 		final long time = System.currentTimeMillis();
 		final Buffer buffer = jEdit.openFile(view, path);
 		if (buffer == null)
@@ -527,10 +527,6 @@ public class CtagsInterfacePlugin extends EditPlugin
 
 	}
 
-	private static void sendAutoJump(final View view, Object what) {
-		AutoJump aj = new AutoJump(view, what);
-		EditBus.send(aj);
-	}
 	private static Tag getUpdatedTag(Tag tag)
 	{
 		Vector<Tag> tags = new Vector<Tag>();
@@ -545,7 +541,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 	{
 		final EditPlugin p = jEdit.getPlugin("ise.plugin.nav.NavigatorPlugin",false);
 		if (p != null)
-			sendAutoJump(view, AutoJump.STARTED);
+			AutoJumpSender.sendAutoJump(view, AutoJump.STARTED);
 		Buffer buffer = jEdit.openFile(view, file);
 		if (buffer == null) {
 			System.err.println("Unable to open: " + file);
@@ -555,7 +551,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 			public void run() {
 				view.getTextArea().setCaretPosition(offset);
 				if (p != null)
-					sendAutoJump(view, AutoJump.ENDED);
+					AutoJumpSender.sendAutoJump(view, AutoJump.ENDED);
 			}
 		});
 	}
