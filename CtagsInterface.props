@@ -12,7 +12,7 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.1=jedit 04.04.01.00
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.2=optional plugin projectviewer.ProjectPlugin 2.9.0.0
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.3=plugin SuperAbbrevsPlugin 0.32
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.4=optional plugin plugin.ise.plugin.nav.NavigatorPlugin 2.2.0.0
-plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.5=plugin gatchan.jedit.lucene.LucenePlugin 2.6
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.5=plugin gatchan.jedit.lucene.LucenePlugin 2.6.1
 
 plugin.ctagsinterface.main.CtagsInterfacePlugin.docs=index.html
 
