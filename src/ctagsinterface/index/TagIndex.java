@@ -233,7 +233,11 @@ public class TagIndex
 			for (String s: extensions)
 			{
 				if (! s.equals(LINE_FLD))
-					q.append(" AND " + s + ":" + escape(tag.getExtension(s)));
+				{
+					String value = tag.getExtension(s);
+					if (! value.isEmpty())
+						q.append(" AND " + s + ":" + escape(value));
+				}
 			}
 		}
 		queryTags(q.toString(), MAX_RESULTS, tags);
