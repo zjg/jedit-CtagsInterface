@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.gjt.sp.jedit.jEdit;
 import org.gjt.sp.util.Log;
@@ -19,7 +21,7 @@ import ctagsinterface.options.GeneralOptionPane;
 
 public class Runner
 {
-
+	private static final int UNKNOWN_NUMBER_OF_FILES = -1;
 	static public final String MESSAGE = CtagsInterfacePlugin.MESSAGE;
 	static public final String TAGGING = MESSAGE + "tagging";
 	private static final String SPACES = "\\s+";
@@ -39,7 +41,7 @@ public class Runner
 	public String runOnFile(String file) {
 		Vector<String> what = new Vector<String>();
 		what.add(file);
-		return run(what);
+		return run(what, 1);
 	}
 	
 	// Runs Ctags on an archive. Returns the tag file.
@@ -69,7 +71,7 @@ public class Runner
 		Vector<String> what = new Vector<String>();
 		what.add("-R");
 		what.add(tree);
-		return run(what);
+		return run(what, UNKNOWN_NUMBER_OF_FILES);
 	}
 	// Runs Ctags on a list of files. Returns the tag file.
 	public String runOnFiles(Vector<String> files) {
@@ -87,7 +89,7 @@ public class Runner
 		Vector<String> what = new Vector<String>();
 		what.add("-L");
 		what.add(fileList);
-		String tagFile = run(what);
+		String tagFile = run(what, files.size());
 		releaseFile(fileList);
 		return tagFile;
 	}
@@ -157,7 +159,7 @@ public class Runner
 		localCopy.delete();
 		return localCopy.getPath();
 	}
-	private String run(Vector<String> what) {
+	private String run(Vector<String> what, int numFiles) {
 		String ctags = GeneralOptionPane.getCtags();
 		String cmd = GeneralOptionPane.getCmd();
 		String tagFile = getTempFile("tags");
@@ -174,7 +176,11 @@ public class Runner
 		String [] args = new String[cmdLine.size()]; 
 		cmdLine.toArray(args);
 		if (logger != null)
+		{
 			logger.beginTask(jEdit.getProperty(TAGGING));
+			if (numFiles != UNKNOWN_NUMBER_OF_FILES)
+				logger.setProgressParams(0, numFiles);
+		}
 		Process p = null;
 		StreamConsumer osc = null, esc = null;
 		try {
@@ -206,6 +212,14 @@ public class Runner
 		if (logger != null)
 			logger.log(s);
 	}
+	private void addProgress(String s, int value)
+	{
+		if (logger != null)
+		{
+			logger.log(s);
+			logger.setProgress(value);
+		}
+	}
 	private String getTempDirectory() {
 		return jEdit.getSettingsDirectory() + "/CtagsInterface";
 	}
@@ -227,6 +241,8 @@ public class Runner
 	private class StreamConsumer extends Thread
 	{
 		private InputStream is;
+		private final Pattern progressLine = Pattern.compile(
+			"^(opening|ignoring).*", Pattern.CASE_INSENSITIVE);
 
 		public StreamConsumer(InputStream is)
 		{
@@ -238,11 +254,18 @@ public class Runner
 			{
 				BufferedReader br = new BufferedReader(new InputStreamReader(is));
 				String line;
+				int processed = 0;
 				do
 				{
 					line = br.readLine();
 					if (line != null)
-						addProgressMessage(line);
+					{
+						Matcher m = progressLine.matcher(line);
+						if (m.matches())
+							addProgress(line, ++processed);
+						else
+							addProgressMessage(line);
+					}
 				}
 				while (line != null);
 			}
