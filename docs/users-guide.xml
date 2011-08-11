@@ -152,19 +152,19 @@
     keyboard shortcuts. Each such Lucene query should retrieve a list of tags
     from the database. There are 3 types of dynamic actions:
     <orderedlist>
-    <listitem>
+    <listitem><para>
      Jump to tag - execute the query and show the list of tags it retrieved
      in the <guilabel>Tag List</guilabel> dockable, allowing you to jump to any
      of them. In case the query returns a single tag, the dynamic action jumps
-     to it directly, without showing it in the dockable.
+     to it directly, without showing it in the dockable.</para>
     </listitem>
-    <listitem>
+    <listitem><para>
      Search prefix - execute the query and show the "Prefix search" popup so
-     you can choose a tag from the query results using its prefix.
+     you can choose a tag from the query results using its prefix. </para>
     </listitem>
-    <listitem>
+    <listitem> <para>
      Search string - execute the query and show the "Prefix search" popup so
-     you can choose a tag from the query results using a substring.
+     you can choose a tag from the query results using a substring. </para>
     </listitem>
     </orderedlist>
    </para>
