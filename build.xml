@@ -41,6 +41,7 @@
 		<pathelement location="${jedit.plugins.dir}/SuperAbbrevs.jar"/>
 		<pathelement location="${jedit.plugins.dir}/Navigator.jar"/>
 		<pathelement location="${jedit.plugins.dir}/lucene-core-3.0.3.jar"/>
+		<pathelement location="${jedit.plugins.dir}/Completion.jar"/>
 	</path>
 
 	<target name="tags">

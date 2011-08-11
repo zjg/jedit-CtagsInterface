@@ -12,4 +12,8 @@
 	<SERVICE CLASS="projectviewer.config.OptionsService" NAME="CtagsInterface">
 		new ctagsinterface.projects.ProjectDependencies.ProjectDependencyOptionService();
 	</SERVICE>
+	<SERVICE CLASS="completion.service.CompletionProvider" NAME="CtagsInterface">
+		new ctagsinterface.jedit.CtagsInterfaceCompletionProvider();
+	</SERVICE>
 </SERVICES>
+
