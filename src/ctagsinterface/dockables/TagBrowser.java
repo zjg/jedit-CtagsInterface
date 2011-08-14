@@ -1,7 +1,6 @@
 package ctagsinterface.dockables;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -19,11 +18,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import org.gjt.sp.jedit.View;
+import org.gjt.sp.util.EnhancedTreeCellRenderer;
 import org.gjt.sp.util.ThreadUtilities;
 
 import ctagsinterface.main.CtagsInterfacePlugin;
@@ -252,16 +252,14 @@ public class TagBrowser extends JPanel
 		}
 	}
 
-	private class TagTreeCellRenderer extends DefaultTreeCellRenderer
+	private class TagTreeCellRenderer extends EnhancedTreeCellRenderer
 	{
 		
 		@Override
-	    public Component getTreeCellRendererComponent(JTree tree,
+	    protected void configureTreeCellRendererComponent(JTree tree,
 	    	Object value, boolean sel, boolean expanded, boolean leaf,
 	    	int row, boolean hasFocus)
 		{
-			super.getTreeCellRendererComponent(tree, value, sel, expanded,
-				leaf, row, hasFocus);
 			setOpenIcon(null);
 			setClosedIcon(null);
 			if (value instanceof DefaultMutableTreeNode)
@@ -276,7 +274,12 @@ public class TagBrowser extends JPanel
 					setIcon(icon);
 				}
 			}
-			return this;
+		}
+
+		@Override
+		protected TreeCellRenderer newInstance()
+		{
+			return new TagTreeCellRenderer();
 		}
 	}
 }
