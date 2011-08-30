@@ -150,7 +150,8 @@ public class ProjectsOptionPane extends AbstractOptionPane
 		});
 	}
 
-	public void _save()
+	@Override
+	protected void _save()
 	{
 		Vector<String> names = new Vector<String>();
 		int nProjects = projectsModel.size(); 

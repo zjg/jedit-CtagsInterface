@@ -134,7 +134,7 @@ public class GeneralOptionPane extends AbstractOptionPane {
 	}
 
 	@Override
-	public void _save() {
+	protected void _save() {
 		jEdit.setProperty(CTAGS, ctags.getText());
 		jEdit.setProperty(CMD, cmd.getText());
 		jEdit.setProperty(PATTERN, pattern.getText());

@@ -143,7 +143,8 @@ public class DirsOptionPane extends AbstractOptionPane
 		CtagsInterfacePlugin.updateOrigins(origin, names);
 	}
 
-	public void _save()
+	@Override
+	protected void _save()
 	{
 		saveOrigins(OriginType.DIRECTORY, dirsModel);
 		saveOrigins(OriginType.ARCHIVE, archivesModel);
