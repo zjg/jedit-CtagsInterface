@@ -105,7 +105,7 @@ public class ActionsOptionPane extends AbstractOptionPane
 		return actionArr;
 	}
 
-	public void save()
+	public void _save()
 	{
 		jEdit.setIntegerProperty(ACTIONS + "size", actionsModel.size());
 		for (int i = 0; i < actionsModel.size(); i++)
