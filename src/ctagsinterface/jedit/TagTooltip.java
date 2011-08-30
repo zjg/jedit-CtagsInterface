@@ -101,7 +101,7 @@ public class TagTooltip extends TextAreaExtension
 			index);
 		if ((tag == null) || (tag.length() == 0))
 			return null;
-		SwingWorker w = new DelayedTooltip(x, y, tag);
+		SwingWorker<String, Void> w = new DelayedTooltip(x, y, tag);
 		w.execute();
 		return null;
 	}
