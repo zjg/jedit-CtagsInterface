@@ -115,4 +115,10 @@ public class CtagsCompletionCandidate extends DefaultListCellRenderer
         }
         return tag.getName().compareTo(o.getDescription());
     }
+
+	@Override
+	public String getLabelText()
+	{
+		return null;
+	}
 }
