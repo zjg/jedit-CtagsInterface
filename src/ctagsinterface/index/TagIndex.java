@@ -22,6 +22,8 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -564,7 +566,10 @@ public class TagIndex
 		{
 			Log.log(Log.MESSAGE, TagIndex.class, "Searching query '" + q.toString() + "' started.");
 			IndexSearcher searcher = new IndexSearcher(directory, true);
-			TopDocs topDocs = searcher.search(q, maxResults);
+			Sort sorter = new Sort(new SortField[] {
+			      SortField.FIELD_SCORE, new SortField("kind", SortField.STRING)
+			});
+			TopDocs topDocs = searcher.search(q, null, maxResults, sorter);
 			Log.log(Log.MESSAGE, TagIndex.class, "Searching query: '" + q.toString() + "' ended.");
 			Log.log(Log.MESSAGE, TagIndex.class, "Processing of " + topDocs.scoreDocs.length + " query results started.");
 			for (ScoreDoc scoreDoc: topDocs.scoreDocs)
