@@ -23,6 +23,7 @@ import org.gjt.sp.jedit.EditBus;
 import org.gjt.sp.jedit.EditPlugin;
 import org.gjt.sp.jedit.View;
 import org.gjt.sp.jedit.jEdit;
+import org.gjt.sp.jedit.MiscUtilities;
 import org.gjt.sp.jedit.gui.DockableWindowManager;
 import org.gjt.sp.jedit.gui.StatusBar;
 import org.gjt.sp.jedit.io.VFSManager;
@@ -451,6 +452,15 @@ public class CtagsInterfacePlugin extends EditPlugin
 	private static void jumpToDirect(final View view, String file,
 		final int line, boolean sendAutoJumpStarted)
 	{
+	   // fixes to the file path so that it matches paths from the VFS
+	   file = MiscUtilities.canonPath(file);
+	   if (Character.isLowerCase(file.charAt(0)))
+	   {
+	      file = Character.toUpperCase(file.charAt(0)) + file.substring(1);
+	   }
+	   file = file.replaceAll("\\\\\\\\", "\\\\");
+	   
+	   
 		final EditPlugin p = jEdit.getPlugin("ise.plugin.nav.NavigatorPlugin",false);
 		if (sendAutoJumpStarted && (p != null))
 			AutoJumpSender.sendAutoJump(view, AutoJump.STARTED);
