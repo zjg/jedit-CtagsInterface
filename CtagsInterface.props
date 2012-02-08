@@ -3,7 +3,7 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.activate=startup
 # general plugin information
 plugin.ctagsinterface.main.CtagsInterfacePlugin.name=CtagsInterface
 plugin.ctagsinterface.main.CtagsInterfacePlugin.author=Shlomy Reinstein
-plugin.ctagsinterface.main.CtagsInterfacePlugin.version=2.1
+plugin.ctagsinterface.main.CtagsInterfacePlugin.version=2.1.1
 plugin.ctagsinterface.main.CtagsInterfacePlugin.description=\
 	CtagsInterface provides common Ctags services to interested plugins.
 
