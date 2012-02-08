@@ -112,13 +112,15 @@ messages.CtagsInterface.searchActiveProjectFirst=Active project first, and only 
 messages.CtagsInterface.showTooltips=Show tag tooltips
 messages.CtagsInterface.completeDesc=Show tag description in code completion
 messages.CtagsInterface.checkCtags=Check path
-messages.CtagsInterface.badCtagsPath=Ctags path does not exist or is not an executable file 
+messages.CtagsInterface.badCtagsPath=Ctags path does not exist or is not an executable file
 messages.CtagsInterface.goodCtagsPath=Ctags path is okay
 messages.CtagsInterface.noPVSupport=ProjectViewer integration not initialized. \
 	Please make sure ProjectViewer is loaded and then restart CtagsInterface.
 messages.CtagsInterface.tagging=Running Ctags
 messages.CtagsInterface.parsing=Parsing tag file
 messages.CtagsInterface.autoCloseProgress=Automatically close progress tab when tagging is over
+messages.CtagsInterface.showProgress=Show progress dialog automatically
+messages.CtagsInterface.taskFinished=CtagsInterface background task finished.
 
 # projectviewer option pane
 plugin.projectviewer.ctagsinterface.main.CtagsInterfacePlugin.option-pane=CtagsInterface-ProjectDependencies

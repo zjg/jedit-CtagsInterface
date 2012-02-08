@@ -18,9 +18,11 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import org.gjt.sp.jedit.jEdit;
 import org.gjt.sp.jedit.View;
 import org.gjt.sp.util.ThreadUtilities;
 
+import ctagsinterface.main.CtagsInterfacePlugin;
 import ctagsinterface.main.Logger;
 import ctagsinterface.options.GeneralOptionPane;
 
@@ -30,9 +32,11 @@ public class Progress extends JPanel
 	private JTabbedPane tabs;
 	private HashMap<Logger, ProgressTab> progressTabs =
 		new HashMap<Logger, ProgressTab>();
+	private View view;
 
 	public Progress(View view)
 	{
+		this.view = view;
 		setLayout(new BorderLayout());
 		tabs = new JTabbedPane();
 		add(tabs, BorderLayout.CENTER);
@@ -114,6 +118,12 @@ public class Progress extends JPanel
 			public void run()
 			{
 				getTab(logger).endTask();
+				if (!GeneralOptionPane.getShowProgress()) {
+					String msg = CtagsInterfacePlugin.MESSAGE +
+						"taskFinished";
+					view.getStatus().setMessageAndClear(
+						jEdit.getProperty(msg));
+				}
 			}
 		});
 	}

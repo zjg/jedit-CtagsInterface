@@ -50,7 +50,7 @@ import ctagsinterface.projects.ProjectWatcher;
 
 public class CtagsInterfacePlugin extends EditPlugin
 {
-	
+
 	private static final String MISC_ORIGIN_ID = "temp";
 	public static final String TAGS_UPDATED_BUFFER_PROP = "TagsUpdated";
 	private static final String DOCKABLE = "ctags-interface-tag-list";
@@ -161,7 +161,7 @@ public class CtagsInterfacePlugin extends EditPlugin
     }
 
     // Adds a temporary tag file to the DB
-    // Existing tags from source files in the tag file are removed first.  
+    // Existing tags from source files in the tag file are removed first.
     static private void addTempTagFile(View view, String tagFile)
     {
     	Logger logger = getLogger(view, "Tag file " + tagFile);
@@ -319,7 +319,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 			JOptionPane.showMessageDialog(
 				view, "No tag selected nor identified at caret");
 			return;
-		} 
+		}
 		Vector<Tag> tags = queryScopedTag(view, tag);
 		if (tags == null)
 			return;
@@ -335,7 +335,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 		TagCompletion.complete(view, prefix);
 	}
 
-	// Run a query on the database and display the results (for debugging) 
+	// Run a query on the database and display the results (for debugging)
 	public static void runQuery(final View view)
 	{
 		String q = JOptionPane.showInputDialog("Enter query:");
@@ -354,7 +354,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 		});
 	}
 
-	// Show a query dialog 
+	// Show a query dialog
 	public static void showQueryDialog(final View view)
 	{
 		new QueryDialog(view);
@@ -392,7 +392,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 			return null;
 		return selected.substring(0, selected.length() - (end - index));
 	}
-	
+
 	// Returns the tag to jump to: The selected tag or the one at the caret.
 	static public String getDestinationTag(View view)
 	{
@@ -401,7 +401,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 			tag = getTagAtCaret(view);
 		return tag;
 	}
-	
+
 	// Returns the tag at the caret.
 	static private String getTagAtCaret(View view)
 	{
@@ -583,7 +583,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 			}
 		}
 	}
-	
+
 	// Refreshes the given origin in the DB
 	static public void refreshOrigin(OriginType type, String name)
 	{
@@ -593,7 +593,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 		index.deleteTagsOfOrigin(logger, origin);
 		tagOrigin(logger, origin);
 	}
-	
+
 	// Deletes an origin with all associated data from the DB
 	public static void deleteOrigin(final Logger logger, final OriginType type,
 		final String name)
@@ -604,7 +604,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 			{
 				index.deleteOrigin(logger, index.getOrigin(type, name, false));
 				if (pvi != null && type == OriginType.PROJECT)
-					pvi.updateWatchers();	
+					pvi.updateWatchers();
 			}
 		});
 	}
@@ -629,7 +629,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 		case ARCHIVE: tagArchive(logger, origin.id, handler); break;
 		}
 	}
-	
+
 	private static void addWorkRequest(String originId, Task task)
 	{
 		Task current = tasks.get(originId);
@@ -642,8 +642,20 @@ public class CtagsInterfacePlugin extends EditPlugin
 	private static Progress getProgressDockable(View view)
 	{
 		DockableWindowManager dwm = view.getDockableWindowManager();
-		dwm.showDockableWindow(PROGRESS);
-		return (Progress) dwm.getDockable(PROGRESS);
+		if (GeneralOptionPane.getShowProgress()) {
+			dwm.showDockableWindow(PROGRESS);
+		}
+
+		Progress win = (Progress) dwm.getDockable(PROGRESS);
+		/*
+		 * This is horrible. But getDockable() returns null if the
+		 * dockable window is not instantiated yet, even if it
+		 * really exists.
+		 */
+		if (win == null) {
+			win = new Progress(view);
+		}
+		return win;
 	}
 
 	private static StatusBar getStatusBar()
@@ -665,16 +677,16 @@ public class CtagsInterfacePlugin extends EditPlugin
 			return;
 		s.setMessage("");
 	}
-	
+
 	private static void parseTagFile(Runner runner, Parser parser,
 		String tagFile, TagHandler handler)
 	{
 		parser.parseTagFile(tagFile, handler);
 		runner.releaseFile(tagFile);
 	}
-	
+
 	/* Source file support */
-	
+
 	public static void tagSourceFile(final String file)
 	{
 		setStatusMessage("Tagging file: " + file);
@@ -717,7 +729,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 	}
 
 	/* Archive support */
-	
+
 	public static void tagArchive(final Logger logger, final String archive,
 		final TagHandler handler)
 	{
@@ -739,9 +751,9 @@ public class CtagsInterfacePlugin extends EditPlugin
 		});
 		removeStatusMessage();
 	}
-	
+
 	/* Source tree support */
-	
+
 	// Runs Ctags on a source tree and add the tags and associated data to the DB
 	public static void tagSourceTree(final Logger logger, final String tree,
 		final TagHandler handler)
@@ -757,13 +769,13 @@ public class CtagsInterfacePlugin extends EditPlugin
 		});
 		removeStatusMessage();
 	}
-	
+
 	/* Project support */
-	
+
 	public static ProjectWatcher getProjectWatcher() {
 		return pvi;
 	}
-	
+
 	// Runs Ctags on a list of files and add the tags and associated data to the DB
 	private static void tagFiles(Logger logger, Vector<String> files,
 		TagHandler handler)
@@ -773,7 +785,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 		String tagFile = runner.runOnFiles(files);
 		parseTagFile(runner, parser, tagFile, handler);
 	}
-	
+
 	// Runs Ctags on a project and inserts the tags and associated data to the DB
 	public static void tagProject(final Logger logger, final String project,
 		final TagHandler handler)
@@ -809,14 +821,14 @@ public class CtagsInterfacePlugin extends EditPlugin
 		}
 		removeStatusMessage();
 	}
-	
+
 	/*
 	 * Interface for other plugins
 	 */
-	
+
 	public static Vector<Tag> queryTag(String tag)
 	{
-		Vector<Tag> tags = new Vector<Tag>(); 
+		Vector<Tag> tags = new Vector<Tag>();
 		index.queryTag(tag, tags);
 		return tags;
 	}
