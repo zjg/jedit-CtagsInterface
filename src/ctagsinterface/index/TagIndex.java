@@ -17,6 +17,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.IndexNotFoundException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -577,6 +578,7 @@ public class TagIndex
 			searcher.close();
 			Log.log(Log.MESSAGE, TagIndex.class, "Closing searcher ended.");
 		}
+		catch (IndexNotFoundException e) { /* ignore */ }
 		catch (IOException e) { e.printStackTrace(); }
 	}
 
