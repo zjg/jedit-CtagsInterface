@@ -7,13 +7,13 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.version=2.2
 plugin.ctagsinterface.main.CtagsInterfacePlugin.description=\
 	CtagsInterface provides common Ctags services to interested plugins.
 
-plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.0=jdk 1.5
-plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.1=jedit 04.05.01.00
-plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.2=optional plugin projectviewer.ProjectPlugin 2.9.0.0
-plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.3=plugin SuperAbbrevsPlugin 0.32
-plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.4=optional plugin ise.plugin.nav.NavigatorPlugin 2.2.0.0
-plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.5=plugin gatchan.jedit.lucene.LucenePlugin 2.6.1
-plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.6=plugin completion.CompletionPlugin 0.2
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.0=jdk 1.6
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.1=jedit 04.05.99.00
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.2=optional plugin projectviewer.ProjectPlugin 3.4
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.3=plugin SuperAbbrevsPlugin 1.0
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.4=optional plugin ise.plugin.nav.NavigatorPlugin 2.3
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.5=plugin gatchan.jedit.lucene.LucenePlugin 2.8
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.6=plugin completion.CompletionPlugin 0.3
 
 plugin.ctagsinterface.main.CtagsInterfacePlugin.docs=index.html
 
@@ -112,13 +112,15 @@ messages.CtagsInterface.searchActiveProjectFirst=Active project first, and only 
 messages.CtagsInterface.showTooltips=Show tag tooltips
 messages.CtagsInterface.completeDesc=Show tag description in code completion
 messages.CtagsInterface.checkCtags=Check path
-messages.CtagsInterface.badCtagsPath=Ctags path does not exist or is not an executable file 
+messages.CtagsInterface.badCtagsPath=Ctags path does not exist or is not an executable file
 messages.CtagsInterface.goodCtagsPath=Ctags path is okay
 messages.CtagsInterface.noPVSupport=ProjectViewer integration not initialized. \
 	Please make sure ProjectViewer is loaded and then restart CtagsInterface.
 messages.CtagsInterface.tagging=Running Ctags
 messages.CtagsInterface.parsing=Parsing tag file
 messages.CtagsInterface.autoCloseProgress=Automatically close progress tab when tagging is over
+messages.CtagsInterface.showProgress=Show progress dialog automatically
+messages.CtagsInterface.taskFinished=CtagsInterface background task finished.
 
 # projectviewer option pane
 plugin.projectviewer.ctagsinterface.main.CtagsInterfacePlugin.option-pane=CtagsInterface-ProjectDependencies
