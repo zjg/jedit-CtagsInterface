@@ -9,7 +9,7 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.description=\
 
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.0=jdk 1.6
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.1=jedit 04.05.99.00
-plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.2=optional plugin projectviewer.ProjectPlugin 3.4
+plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.2=optional plugin projectviewer.ProjectPlugin 3.4.0
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.3=plugin SuperAbbrevsPlugin 1.0
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.4=optional plugin ise.plugin.nav.NavigatorPlugin 2.3
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.5=plugin gatchan.jedit.lucene.LucenePlugin 2.8

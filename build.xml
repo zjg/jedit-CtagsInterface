@@ -9,6 +9,7 @@
 	<property name="compiler.target" value="1.5" />
 	<property file="build.properties"/>
 	<property file="../build.properties"/>
+	<property name="src.dir" location="src" />
 <!--	<property file="${user.home}/.build.properties"/>
 	<property file="${user.home}/build.properties"/> -->
 
