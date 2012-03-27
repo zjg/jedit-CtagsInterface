@@ -39,6 +39,7 @@ public class GeneralOptionPane extends AbstractOptionPane {
 	static public final String PREVIEW_TOOLBAR = OPTION + "previewToolbar";
 	static public final String PREVIEW_WRAP = OPTION + "previewWrap";
 	static public final String PREVIEW_DELAY = OPTION + "previewDelay";
+	static public final String SHOW_PROGRESS = OPTION + "showProgress";
 	static public final String AUTO_CLOSE_PROGRESS = OPTION + "autoCloseProgress";
 	static private final String CHECK_CTAGS = MESSAGE + "checkCtags";
 	static private final String BAD_CTAGS_PATH = MESSAGE + "badCtagsPath";
@@ -56,6 +57,7 @@ public class GeneralOptionPane extends AbstractOptionPane {
 	JCheckBox previewToolbar;
 	JCheckBox previewWrap;
 	JTextField previewDelay;
+	JCheckBox showProgress;
 	JCheckBox autoCloseProgress;
 
 	public GeneralOptionPane() {
@@ -77,25 +79,25 @@ public class GeneralOptionPane extends AbstractOptionPane {
 
 		cmd = new JTextField(jEdit.getProperty(CMD), 40);
 		addComponent(jEdit.getProperty(MESSAGE + "cmd"), cmd);
-		
+
 		pattern = new JTextField(jEdit.getProperty(PATTERN), 40);
 		addComponent(jEdit.getProperty(MESSAGE + "pattern"), pattern);
-		
+
 		updateOnLoad = new JCheckBox(jEdit.getProperty(MESSAGE + "updateOnLoad"),
 			getUpdateOnLoad());
 		addComponent(updateOnLoad);
 		updateOnSave = new JCheckBox(jEdit.getProperty(MESSAGE + "updateOnSave"),
 			getUpdateOnSave());
 		addComponent(updateOnSave);
-		
+
 		tooltips = new JCheckBox(jEdit.getProperty(MESSAGE + "showTooltips"),
 			getShowTooltips());
 		addComponent(tooltips);
-		
+
 		completeDesc = new JCheckBox(jEdit.getProperty(MESSAGE + "completeDesc"),
 			getCompleteDesc());
 		addComponent(completeDesc);
-		
+
 		JPanel previewPanel = new JPanel();
 		previewPanel.setLayout(new GridLayout(0, 1));
 		previewPanel.setBorder(new TitledBorder(jEdit.getProperty(
@@ -128,6 +130,10 @@ public class GeneralOptionPane extends AbstractOptionPane {
 		previewPanel.add(previewDelayPanel);
 		addComponent(previewPanel);
 
+		showProgress = new JCheckBox(jEdit.getProperty(MESSAGE + "showProgress"),
+			getShowProgress());
+		addComponent(showProgress);
+
 		autoCloseProgress = new JCheckBox(jEdit.getProperty(MESSAGE + "autoCloseProgress"),
 			getAutoCloseProgress());
 		addComponent(autoCloseProgress);
@@ -146,6 +152,7 @@ public class GeneralOptionPane extends AbstractOptionPane {
 		jEdit.setBooleanProperty(PREVIEW_TOOLBAR, previewToolbar.isSelected());
 		jEdit.setBooleanProperty(PREVIEW_WRAP, previewWrap.isSelected());
 		jEdit.setIntegerProperty(PREVIEW_DELAY, Integer.valueOf(previewDelay.getText()));
+		jEdit.setBooleanProperty(SHOW_PROGRESS, showProgress.isSelected());
 		jEdit.setBooleanProperty(AUTO_CLOSE_PROGRESS, autoCloseProgress.isSelected());
 		EditBus.send(new PropertiesChanged(null));
 	}
@@ -205,6 +212,9 @@ public class GeneralOptionPane extends AbstractOptionPane {
 	}
 	public static int getPreviewDelay() {
 		return jEdit.getIntegerProperty(PREVIEW_DELAY, 0);
+	}
+	public static boolean getShowProgress() {
+		return jEdit.getBooleanProperty(SHOW_PROGRESS, true);
 	}
 	public static boolean getAutoCloseProgress() {
 		return jEdit.getBooleanProperty(AUTO_CLOSE_PROGRESS, true);
