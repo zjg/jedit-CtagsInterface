@@ -35,6 +35,7 @@ public class GeneralOptionPane extends AbstractOptionPane {
 	static public final String UPDATE_ON_SAVE = OPTION + "updateOnSave";
 	static public final String TOOLTIPS = OPTION + "tooltips";
 	static public final String COMPLETE_DESC = OPTION + "completeDesc";
+	static public final String MATCH_LANGUAGE = OPTION + "matchLanguage";
 	static public final String PREVIEW_VERTICAL_SPLIT = OPTION + "previewVerticalSplit";
 	static public final String PREVIEW_TOOLBAR = OPTION + "previewToolbar";
 	static public final String PREVIEW_WRAP = OPTION + "previewWrap";
@@ -53,6 +54,7 @@ public class GeneralOptionPane extends AbstractOptionPane {
 	JCheckBox background;
 	JCheckBox tooltips;
 	JCheckBox completeDesc;
+	JCheckBox matchLanguage;
 	JCheckBox previewVerticalSplitter;
 	JCheckBox previewToolbar;
 	JCheckBox previewWrap;
@@ -97,7 +99,11 @@ public class GeneralOptionPane extends AbstractOptionPane {
 		completeDesc = new JCheckBox(jEdit.getProperty(MESSAGE + "completeDesc"),
 			getCompleteDesc());
 		addComponent(completeDesc);
-
+		
+		matchLanguage = new JCheckBox(jEdit.getProperty(MESSAGE + "matchLanguage"),
+			getMatchLanguage());
+		addComponent(matchLanguage);
+		
 		JPanel previewPanel = new JPanel();
 		previewPanel.setLayout(new GridLayout(0, 1));
 		previewPanel.setBorder(new TitledBorder(jEdit.getProperty(
@@ -148,6 +154,7 @@ public class GeneralOptionPane extends AbstractOptionPane {
 		jEdit.setBooleanProperty(UPDATE_ON_SAVE, updateOnSave.isSelected());
 		jEdit.setBooleanProperty(TOOLTIPS, tooltips.isSelected());
 		jEdit.setBooleanProperty(COMPLETE_DESC, completeDesc.isSelected());
+		jEdit.setBooleanProperty(MATCH_LANGUAGE, matchLanguage.isSelected());
 		jEdit.setBooleanProperty(PREVIEW_VERTICAL_SPLIT, previewVerticalSplitter.isSelected());
 		jEdit.setBooleanProperty(PREVIEW_TOOLBAR, previewToolbar.isSelected());
 		jEdit.setBooleanProperty(PREVIEW_WRAP, previewWrap.isSelected());
@@ -197,6 +204,9 @@ public class GeneralOptionPane extends AbstractOptionPane {
 	}
 	public static boolean getCompleteDesc() {
 		return jEdit.getBooleanProperty(COMPLETE_DESC, true);
+	}
+	public static boolean getMatchLanguage() {
+		return jEdit.getBooleanProperty(MATCH_LANGUAGE, true);
 	}
 	public static boolean getPreviewVerticalSplit() {
 		return jEdit.getBooleanProperty(PREVIEW_VERTICAL_SPLIT, true);

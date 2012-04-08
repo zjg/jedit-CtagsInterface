@@ -66,6 +66,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 	private static Object bufferUpdateLock = new Object();
 	private static HashMap<String, Task> tasks =
 		new HashMap<String, Task>();
+	private static LanguageMap langMap = new LanguageMap();
 
 	public void start()
 	{
@@ -125,6 +126,18 @@ public class CtagsInterfacePlugin extends EditPlugin
 		return new Logger(name, progress);
 	}
 
+	static public LanguageMap getLangMap()
+	{
+		return langMap;
+	}
+
+	static public String getLanguage(View view)
+	{
+		LanguageMap langMap = getLangMap();
+		String language = langMap.getLanguage(view);
+		return language;
+	}
+
 	static public void updateActions()
 	{
 		actions.removeAllActions();
@@ -134,19 +147,38 @@ public class CtagsInterfacePlugin extends EditPlugin
 		actions.initKeyBindings();
 	}
 
-    static private class TagFileHandler implements TagHandler
-    {
+	static private class TagFileHandler implements TagHandler
+	{
 		private HashSet<String> files = new HashSet<String>();
 		private Origin origin;
 		private String originsStr;
+		private Boolean remove;
 
 		public TagFileHandler(Origin origin)
 		{
-			this.origin = origin;
+			this(origin, false);
 		}
+
+		public TagFileHandler(Origin origin, Boolean remove)
+		{
+			this.origin = origin;
+			this.remove = remove;
+		}
+
+
 		public void processTag(Tag t)
 		{
+
+
 			String file = t.getFile();
+
+			if(remove)
+			{
+				index.deleteTag(t);
+				return;
+			}
+
+
 			if (! files.contains(file))
 			{
 				// Add the new origin to the current list of origins, if not
@@ -156,27 +188,41 @@ public class CtagsInterfacePlugin extends EditPlugin
 				index.deleteTagsFromSourceFile(file);
 				files.add(file);
 			}
+
+
 			index.insertTag(t, originsStr);
 		}
-    }
 
-    // Adds a temporary tag file to the DB
-    // Existing tags from source files in the tag file are removed first.
-    static private void addTempTagFile(View view, String tagFile)
-    {
-    	Logger logger = getLogger(view, "Tag file " + tagFile);
-    	Parser parser = getParser(logger);
+	}
+
+	// Adds a temporary tag file to the DB
+	// Existing tags from source files in the tag file are removed first.
+	static public void addTagFile(View view, String tagFile)
+	{
+		if (tagFile == null || tagFile.length() == 0)
+			return;
+		Logger logger = getLogger(view, "Adding tag file " + tagFile);
+		Parser parser = getParser(logger);
 		parser.parseTagFile(tagFile, new TagFileHandler(
 			index.getOrigin(OriginType.MISC, MISC_ORIGIN_ID, true)));
-    }
+	}
 
-    // Action: Prompt for a temporary tag file to add to the DB
+	// Action: Prompt for a temporary tag file to add to the DB
 	static public void addTagFile(View view)
 	{
 		String tagFile = JOptionPane.showInputDialog("Tag file:");
+		addTagFile(view, tagFile);
+	}
+
+	// Remove tags from tag file from the DB
+	static public void deleteTagsFromTagFile(View view, String tagFile)
+	{
 		if (tagFile == null || tagFile.length() == 0)
 			return;
-		addTempTagFile(view, tagFile);
+		Logger logger = getLogger(view, "Removing tag file " + tagFile);
+		Parser parser = getParser(logger);
+		parser.parseTagFile(tagFile, new TagFileHandler(
+			index.getOrigin(OriginType.MISC, MISC_ORIGIN_ID, true), true));
 	}
 
 	// Action: Add current file to the DB
@@ -241,6 +287,9 @@ public class CtagsInterfacePlugin extends EditPlugin
 	public static Vector<Tag> runScopedQuery(View view, String q,
 		int maxResults)
 	{
+		if (GeneralOptionPane.getMatchLanguage())
+			q += " AND " + index.getLangNameQuery(getLanguage(view));
+
 		boolean projectScope = (pvi != null &&
 			(ProjectsOptionPane.getSearchActiveProjectOnly() ||
 			 ProjectsOptionPane.getSearchActiveProjectFirst() ||
@@ -296,7 +345,8 @@ public class CtagsInterfacePlugin extends EditPlugin
 	{
 		if (tag == null || tag.length() == 0)
 			return null;
-		return runScopedQuery(view, index.getTagNameQuery(tag));
+		String q = index.getTagNameQuery(tag);
+		return runScopedQuery(view, q);
 	}
 
 	// Context menu action from FSB

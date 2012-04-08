@@ -63,6 +63,7 @@ public class TagIndex
 	public static final String ORIGIN_DOC_TYPE = "origin";
 	public static final String TAG_DOC_TYPE = "tag";
 	public static final String ORIGIN_ID_FLD = "id";
+	public static final String LANGUAGE = "language";
 	public static final int MAX_RESULTS = 1000;
 	private FSDirectory directory;
 	private IndexWriter writer;
@@ -94,7 +95,7 @@ public class TagIndex
 		}
 		public String name;
 	}
-	
+
 	public TagIndex() throws RuntimeException
 	{
 		File path = new File(getIndexPath());
@@ -129,7 +130,7 @@ public class TagIndex
 			}
 			writer = new IndexWriter(directory, analyzer,
 				IndexWriter.MaxFieldLength.UNLIMITED);
-			
+
 		}
 		catch (IOException e) { e.printStackTrace(); }
 	}
@@ -216,10 +217,25 @@ public class TagIndex
 	public void deleteTagsFromSourceFile(String file)
 	{
 		Query q = getQuery(_PATH_FLD + ":" + escape(file));
+		deleteQuery(q);
+	}
+
+	public void deleteTag(Tag tag)
+	{
+		Query q = getQuery(_NAME_FLD + ":" + escape(tag.getName()) + " AND " +
+							_PATH_FLD + ":" + escape(tag.getFile()) + " AND " +
+							PATTERN_FLD + ":" + escape(tag.getPattern()));
+		deleteQuery(q);
+	}
+
+	public void deleteQuery(Query q)
+	{
 		if (q != null)
 		{
-			try { writer.deleteDocuments(q); }
-			catch (IOException e) { e.printStackTrace(); }
+			try {
+				writer.deleteDocuments(q);
+			}
+			catch (IOException e) { e.printStackTrace();}
 		}
 	}
 
@@ -260,7 +276,7 @@ public class TagIndex
 			}
 			catch (IOException e) { e.printStackTrace(); }
 		}
-		
+
 		// Remove the specified origin from remaining tags.
 		// Using ORIGIN_FLD for a substring match.
 		s = DOCTYPE_FLD + ":" + TAG_DOC_TYPE + " AND " +
@@ -345,8 +361,8 @@ public class TagIndex
 		Query q = getQuery(s);
 		if (q != null)
 		{
-			try	{ writer.deleteDocuments(q); writer.optimize(); }
-			catch (IOException e) {	e.printStackTrace(); }
+			try { writer.deleteDocuments(q); writer.optimize(); }
+			catch (IOException e) { e.printStackTrace(); }
 		}
 		endActivity();
 	}
@@ -454,7 +470,7 @@ public class TagIndex
 	private Tag documentToTag(Document doc)
 	{
 		Tag tag = new Tag(doc.get(_NAME_FLD), doc.get(_PATH_FLD), doc.get(PATTERN_FLD));
-		Hashtable<String, String> extensions = new Hashtable<String, String>(); 
+		Hashtable<String, String> extensions = new Hashtable<String, String>();
 		for (Fieldable field: doc.getFields())
 		{
 			if (fixedFields.contains(field.name()))
@@ -538,9 +554,13 @@ public class TagIndex
 			_NAME_FLD + ":" + escape(name);
 	}
 
+	public String getLangNameQuery(String lang) {
+		return LANGUAGE + ":" + escape(lang);
+	}
+
 	private Query getQuery(String query)
 	{
-		Log.log(Log.MESSAGE, TagIndex.class, "Parsing query: " + query); 
+		Log.log(Log.MESSAGE, TagIndex.class, "Parsing query: " + query);
 		QueryParser qp = new QueryParser(Version.LUCENE_30, _NAME_FLD, analyzer);
 		qp.setAllowLeadingWildcard(true);
 		qp.setLowercaseExpandedTerms(false);

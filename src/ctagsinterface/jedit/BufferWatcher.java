@@ -17,13 +17,13 @@ public class BufferWatcher
 {
 
 	private TagIndex index;
-	
+
 	public BufferWatcher(TagIndex index)
 	{
 		EditBus.addToBus(this);
 		this.index = index;
 	}
-	
+
 	public void shutdown()
 	{
 		EditBus.removeFromBus(this);

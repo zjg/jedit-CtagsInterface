@@ -77,7 +77,7 @@ ctags-interface-browser.label=Tag Index browser
 
 # options
 options.CtagsInterface.ctags=ctags
-options.CtagsInterface.cmd=--fields\=+anzKiS
+options.CtagsInterface.cmd=--fields\=+anzKiSl
 options.CtagsInterface.pattern=\\w+
 
 # messages
@@ -111,6 +111,7 @@ messages.CtagsInterface.searchActiveProjectAndDeps=Active project and its depend
 messages.CtagsInterface.searchActiveProjectFirst=Active project first, and only if not found, search in other sources.
 messages.CtagsInterface.showTooltips=Show tag tooltips
 messages.CtagsInterface.completeDesc=Show tag description in code completion
+messages.CtagsInterface.matchLanguage=Match tags with language of current buffer
 messages.CtagsInterface.checkCtags=Check path
 messages.CtagsInterface.badCtagsPath=Ctags path does not exist or is not an executable file
 messages.CtagsInterface.goodCtagsPath=Ctags path is okay
