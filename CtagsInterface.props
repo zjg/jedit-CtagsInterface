@@ -112,6 +112,7 @@ messages.CtagsInterface.searchActiveProjectFirst=Active project first, and only 
 messages.CtagsInterface.showTooltips=Show tag tooltips
 messages.CtagsInterface.completeDesc=Show tag description in code completion
 messages.CtagsInterface.matchLanguage=Match tags with language of current buffer
+messages.CtagsInterface.matchLanguageMessage=Please note source file language needs to have be indexed for this option to work. If you have tags without language information retag with '--fields=+l'.
 messages.CtagsInterface.checkCtags=Check path
 messages.CtagsInterface.badCtagsPath=Ctags path does not exist or is not an executable file
 messages.CtagsInterface.goodCtagsPath=Ctags path is okay

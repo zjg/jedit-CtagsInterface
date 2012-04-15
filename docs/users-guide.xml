@@ -52,6 +52,9 @@
  </para>
 
  <literallayout> --languages=c,c++,java,python </literallayout>
+ <para>
+ When the option to 'Only show tags where language has been stored and is the same as the current buffer' is selected tooltips and completion suggestions will only be shown from tags whose language matches the language of the current buffer. If the source file's language hasn't been indexed nothing will be shown, to fix this reindex your source files including the 'l' flag in the ctags '--fields' option.
+ </para>
 </chapter>
  <chapter id="tagdbs">
    <title> Tagging Projects and Source Trees </title>

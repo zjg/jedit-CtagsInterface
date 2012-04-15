@@ -99,11 +99,20 @@ public class GeneralOptionPane extends AbstractOptionPane {
 		completeDesc = new JCheckBox(jEdit.getProperty(MESSAGE + "completeDesc"),
 			getCompleteDesc());
 		addComponent(completeDesc);
-		
+
 		matchLanguage = new JCheckBox(jEdit.getProperty(MESSAGE + "matchLanguage"),
 			getMatchLanguage());
 		addComponent(matchLanguage);
-		
+
+		matchLanguage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				if (matchLanguage.isSelected()) {
+					JOptionPane.showMessageDialog(null,
+						jEdit.getProperty(MESSAGE + "matchLanguageMessage"));    
+				}
+			}
+		});
+
 		JPanel previewPanel = new JPanel();
 		previewPanel.setLayout(new GridLayout(0, 1));
 		previewPanel.setBorder(new TitledBorder(jEdit.getProperty(
