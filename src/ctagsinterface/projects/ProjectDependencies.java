@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -17,7 +16,6 @@ import javax.swing.JScrollPane;
 
 import org.gjt.sp.jedit.AbstractOptionPane;
 import org.gjt.sp.jedit.GUIUtilities;
-import org.gjt.sp.jedit.MiscUtilities;
 import org.gjt.sp.jedit.OptionGroup;
 import org.gjt.sp.jedit.OptionPane;
 import org.gjt.sp.jedit.jEdit;
@@ -28,7 +26,7 @@ import projectviewer.config.OptionsService;
 import projectviewer.vpt.VPTProject;
 import ctagsinterface.index.TagIndex;
 import ctagsinterface.main.CtagsInterfacePlugin;
-import ctagsinterface.main.VFSHelper;
+import ctagsinterface.index.TagIndex.OriginType;
 
 @SuppressWarnings("serial")
 public class ProjectDependencies extends AbstractOptionPane
@@ -43,7 +41,7 @@ public class ProjectDependencies extends AbstractOptionPane
 	DefaultListModel treesModel;
     DefaultListModel tagFilesModel;
 	VPTProject project;
-	
+
 	public ProjectDependencies(VPTProject project)
 	{
 		super("CtagsInterface-ProjectDependencies");
@@ -56,6 +54,7 @@ public class ProjectDependencies extends AbstractOptionPane
 	}
 	protected void _init()
 	{
+        refreshDependencies();
 		projectsModel = getListModel(PROJECT_DEPENDENCY);
 		projects = createList("Projects:", projectsModel, new DependencyAsker ()
 		{
@@ -78,8 +77,23 @@ public class ProjectDependencies extends AbstractOptionPane
 				return showTagFileSelectionDialog();
 			}
 		});
-
 	}
+
+    private void refreshDependencies()
+    {
+        refreshDependency(PROJECT_DEPENDENCY, OriginType.PROJECT);
+        refreshDependency(TREE_DEPENDENCY, OriginType.DIRECTORY);
+        refreshDependency(TAGFILE_DEPENDENCY, OriginType.TAGFILE);
+    }
+
+    private void refreshDependency(String dependencyType, OriginType originType)
+    {
+        Vector <String> origins = new Vector<String>();
+        CtagsInterfacePlugin.getIndex().getOrigins(originType, origins);
+        Vector <String> dependencies = getListProperty(dependencyType);
+        dependencies.retainAll(origins);
+        setListProperty(dependencyType, dependencies);
+    }
 
 	private void setListModel(String propertyName, DefaultListModel model)
 	{
@@ -113,7 +127,7 @@ public class ProjectDependencies extends AbstractOptionPane
 			project.removeProperty(prop);
 		}
 	}
-	
+
 	private JList createList(String title, final DefaultListModel model,
 		final DependencyAsker da)
 	{
@@ -127,11 +141,11 @@ public class ProjectDependencies extends AbstractOptionPane
 			public void actionPerformed(ActionEvent e)
 			{
 				String s = da.getDependency();
-				if (s != null)
+				if (s != null && !s.equals("") && !model.contains(s))
 				{
-					int index = list.getSelectedIndex();
-					model.add(index + 1, s);
-					list.setSelectedIndex(index + 1);
+                    int index = list.getSelectedIndex();
+                    model.add(index + 1, s);
+                    list.setSelectedIndex(index + 1);
 				}
 			}
 		});
@@ -167,39 +181,41 @@ public class ProjectDependencies extends AbstractOptionPane
 			return null;
 		}
 		String project = pw.getActiveProject(jEdit.getActiveView());
-		Vector<String> nameVec = pw.getProjects();
+        Vector<String> nameVec = CtagsInterfacePlugin.getIndex().getOrigins(OriginType.PROJECT);
 		nameVec.remove(project);
-		String [] names = new String[nameVec.size()];
-		nameVec.toArray(names);
-		String selected = (String) JOptionPane.showInputDialog(this, "Select project:",
-			"Projects", JOptionPane.QUESTION_MESSAGE, null, names, names[0]);
-		return selected;
+        return getSelectionDialog(nameVec, projectsModel, "Project");
 	}
+
 	private String showSourceTreeSelectionDialog()
 	{
-		JFileChooser fc = new JFileChooser();
-		fc.setDialogTitle("Select root of source tree");
-		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		int ret = fc.showOpenDialog(this);
-		if (ret != JFileChooser.APPROVE_OPTION)
-			return null;
-		String dir = fc.getSelectedFile().getAbsolutePath();
-		return MiscUtilities.resolveSymlinks(dir);
+        Vector<String> dirsVec = CtagsInterfacePlugin.getIndex().getOrigins(OriginType.DIRECTORY);
+        return getSelectionDialog(dirsVec, treesModel, "Source tree");
 	}
 
     private String showTagFileSelectionDialog()
 	{
-		JFileChooser fc = new JFileChooser();
-		fc.setDialogTitle("Select tagfile");
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		int ret = fc.showOpenDialog(this);
-		if (ret != JFileChooser.APPROVE_OPTION)
-			return null;
-        String tagFile = fc.getSelectedFile().getAbsolutePath();
-        if (!VFSHelper.checkTagFileVFS(tagFile))
-            return null;
-        return MiscUtilities.resolveSymlinks(tagFile);
+        Vector<String> tagFilesVec = CtagsInterfacePlugin.getIndex().getOrigins(OriginType.TAGFILE);
+        return getSelectionDialog(tagFilesVec, tagFilesModel, "Tag file");
 	}
+
+    private String getSelectionDialog(Vector<String> nameVec, DefaultListModel listModel, String label)
+    {
+        String selected = "";
+        Object [] listItems = listModel.toArray();
+        for (int i = 0; i < listItems.length; i++) {
+            nameVec.remove(listItems[i].toString());
+        }
+        if (nameVec.size()>0) {
+            String [] names = new String[nameVec.size()];
+            nameVec.toArray(names);
+            selected = (String) JOptionPane.showInputDialog(this, "Select a "+ label.toLowerCase()+":",
+			label+"s", JOptionPane.QUESTION_MESSAGE, null, names, names[0]);
+        } else {
+            String other = listModel.size()>0 ? "other " : "";
+            JOptionPane.showMessageDialog(this, "No " + other + label.toLowerCase() +"s available.");
+        }
+        return selected;
+    }
 
 	protected void _save()
 	{
@@ -207,7 +223,7 @@ public class ProjectDependencies extends AbstractOptionPane
 		setListModel(TREE_DEPENDENCY, treesModel);
         setListModel(TAGFILE_DEPENDENCY, tagFilesModel);
 	}
-	
+
 	public static Vector<String> getListProperty(VPTProject project, String propertyName)
 	{
 		Vector<String> list = new Vector<String>();
@@ -222,7 +238,7 @@ public class ProjectDependencies extends AbstractOptionPane
 		}
 		return list;
 	}
-	
+
 	public static HashMap<String, Vector<String>> getDependencies(String projectName)
 	{
 		HashMap<String, Vector<String>> map = new HashMap<String, Vector<String>>();
@@ -245,7 +261,7 @@ public class ProjectDependencies extends AbstractOptionPane
 		{
 			return null;
 		}
-	
+
 		public OptionPane getOptionPane(VPTProject proj)
 		{
 			return new ProjectDependencies(proj);

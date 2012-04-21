@@ -72,7 +72,8 @@ public class TagFilesOptionPane extends AbstractOptionPane
                     Macros.message(jEdit.getActiveView(), "File name needs to end with \".tag\"");
                     return;
                 }
-				tagFilesModel.addElement(tagFilePath);
+                if (!tagFilesModel.contains(tagFilePath))
+                    tagFilesModel.addElement(tagFilePath);
 			}
 		});
 
@@ -112,8 +113,8 @@ public class TagFilesOptionPane extends AbstractOptionPane
 
 	static public Vector<String> getTagFiles()
 	{
-		Vector<String> tagFileList = new Vector<String>();
-		CtagsInterfacePlugin.getIndex().getOrigins(OriginType.TAGFILE, tagFileList);
-		return tagFileList;
+		Vector<String> tagFiles = new Vector<String>();
+		CtagsInterfacePlugin.getIndex().getOrigins(OriginType.TAGFILE, tagFiles);
+		return tagFiles;
     }
 }

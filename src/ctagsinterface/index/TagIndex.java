@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
@@ -183,6 +184,13 @@ public class TagIndex
 				origins.add(doc.get(ORIGIN_ID_FLD));
 			}
 		});
+	}
+
+    public Vector<String> getOrigins(OriginType type)
+	{
+		Vector<String> originsList = new Vector<String>();
+		getOrigins(type, originsList);
+		return originsList;
 	}
 
 	public String getOriginsOfFile(String file)

@@ -121,7 +121,7 @@ public class ProjectsOptionPane extends AbstractOptionPane
 					String selected = (String) JOptionPane.showInputDialog(
 						ProjectsOptionPane.this, "Select project:", "Projects",
 						JOptionPane.QUESTION_MESSAGE, null, names, names[0]);
-					if (selected != null)
+					if (selected != null && !projectsModel.contains(selected))
 						projectsModel.addElement(selected);
 				}
 			});
