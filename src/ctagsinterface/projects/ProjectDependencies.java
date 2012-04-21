@@ -28,16 +28,20 @@ import projectviewer.config.OptionsService;
 import projectviewer.vpt.VPTProject;
 import ctagsinterface.index.TagIndex;
 import ctagsinterface.main.CtagsInterfacePlugin;
+import ctagsinterface.main.VFSHelper;
 
 @SuppressWarnings("serial")
 public class ProjectDependencies extends AbstractOptionPane
 {
 	private static final String PROJECT_DEPENDENCY = "projectDependency";
 	private static final String TREE_DEPENDENCY = "treeDependency";
+    private static final String TAGFILE_DEPENDENCY = "tagFileDependency";
 	JList projects;
 	JList trees;
+    JList tagFiles;
 	DefaultListModel projectsModel;
 	DefaultListModel treesModel;
+    DefaultListModel tagFilesModel;
 	VPTProject project;
 	
 	public ProjectDependencies(VPTProject project)
@@ -67,6 +71,14 @@ public class ProjectDependencies extends AbstractOptionPane
 				return showSourceTreeSelectionDialog();
 			}
 		});
+        addSeparator();
+		tagFilesModel = getListModel(TAGFILE_DEPENDENCY);
+		tagFiles = createList("Tag files:", tagFilesModel, new DependencyAsker () {
+			public String getDependency() {
+				return showTagFileSelectionDialog();
+			}
+		});
+
 	}
 
 	private void setListModel(String propertyName, DefaultListModel model)
@@ -174,10 +186,26 @@ public class ProjectDependencies extends AbstractOptionPane
 		String dir = fc.getSelectedFile().getAbsolutePath();
 		return MiscUtilities.resolveSymlinks(dir);
 	}
+
+    private String showTagFileSelectionDialog()
+	{
+		JFileChooser fc = new JFileChooser();
+		fc.setDialogTitle("Select tagfile");
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		int ret = fc.showOpenDialog(this);
+		if (ret != JFileChooser.APPROVE_OPTION)
+			return null;
+        String tagFile = fc.getSelectedFile().getAbsolutePath();
+        if (!VFSHelper.checkTagFileVFS(tagFile))
+            return null;
+        return MiscUtilities.resolveSymlinks(tagFile);
+	}
+
 	protected void _save()
 	{
 		setListModel(PROJECT_DEPENDENCY, projectsModel);
 		setListModel(TREE_DEPENDENCY, treesModel);
+        setListModel(TAGFILE_DEPENDENCY, tagFilesModel);
 	}
 	
 	public static Vector<String> getListProperty(VPTProject project, String propertyName)
@@ -205,6 +233,8 @@ public class ProjectDependencies extends AbstractOptionPane
 		map.put(TagIndex.OriginType.PROJECT.name, projectDeps);
 		Vector<String> treeDeps = getListProperty(project, TREE_DEPENDENCY);
 		map.put(TagIndex.OriginType.DIRECTORY.name, treeDeps);
+        Vector<String> tagFileDeps = getListProperty(project, TAGFILE_DEPENDENCY);
+		map.put(TagIndex.OriginType.TAGFILE.name, tagFileDeps);
 		return map;
 	}
 

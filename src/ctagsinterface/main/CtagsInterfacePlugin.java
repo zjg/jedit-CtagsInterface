@@ -201,10 +201,12 @@ public class CtagsInterfacePlugin extends EditPlugin
 	{
 		if (tagFile == null || tagFile.length() == 0)
 			return;
+		if(!new File(tagFile).exists())
+		    return;
 		Logger logger = getLogger(view, "Adding tag file " + tagFile);
 		Parser parser = getParser(logger);
 		parser.parseTagFile(tagFile, new TagFileHandler(
-			index.getOrigin(OriginType.MISC, MISC_ORIGIN_ID, true)));
+			index.getOrigin(OriginType.TAGFILE, tagFile, true)));
 	}
 
 	// Action: Prompt for a temporary tag file to add to the DB
@@ -214,15 +216,21 @@ public class CtagsInterfacePlugin extends EditPlugin
 		addTagFile(view, tagFile);
 	}
 
+    // Action: Add temporary tag file to the DB
+    static public void addTagFile(String tagFile)
+	{
+		addTagFile(jEdit.getActiveView(), tagFile);
+	}
+
 	// Remove tags from tag file from the DB
 	static public void deleteTagsFromTagFile(View view, String tagFile)
 	{
 		if (tagFile == null || tagFile.length() == 0)
 			return;
+		if(!new File(tagFile).exists())
+		    return;
 		Logger logger = getLogger(view, "Removing tag file " + tagFile);
-		Parser parser = getParser(logger);
-		parser.parseTagFile(tagFile, new TagFileHandler(
-			index.getOrigin(OriginType.MISC, MISC_ORIGIN_ID, true), true));
+		index.deleteTagsOfOrigin(logger, index.getOrigin(OriginType.TAGFILE, tagFile, true));
 	}
 
 	// Action: Add current file to the DB

@@ -81,6 +81,7 @@ public class TagIndex
 		PROJECT("Project"),
 		DIRECTORY("Directory"),
 		ARCHIVE("Archive"),
+        TAGFILE("TagFile"),
 		MISC("Misc");
 		private OriginType(String name)
 		{

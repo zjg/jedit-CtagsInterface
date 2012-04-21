@@ -52,6 +52,7 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.menu=\
 plugin.ctagsinterface.main.CtagsInterfacePlugin.option-group=CtagsInterface-General \
 	CtagsInterface-Actions \
 	CtagsInterface-Dirs \
+	CtagsInterface-TagFiles \
 	CtagsInterface-Projects
 options.CtagsInterface-General.label=General
 options.CtagsInterface-General.code=new ctagsinterface.options.GeneralOptionPane();
@@ -59,6 +60,8 @@ options.CtagsInterface-Actions.label=Actions
 options.CtagsInterface-Actions.code=new ctagsinterface.options.ActionsOptionPane();
 options.CtagsInterface-Dirs.label=Source trees
 options.CtagsInterface-Dirs.code=new ctagsinterface.options.DirsOptionPane();
+options.CtagsInterface-TagFiles.label=Tag Files
+options.CtagsInterface-TagFiles.code=new ctagsinterface.options.TagFilesOptionPane();
 options.CtagsInterface-Projects.label=Projects
 options.CtagsInterface-Projects.code=new ctagsinterface.options.ProjectsOptionPane();
 
@@ -73,7 +76,7 @@ ctags-interface-browser.title=Tag Index browser
 ctags-interface-browser.label=Tag Index browser
 
 # docs
-#plugin.ctagsinterface.main.CtagsInterfacePlugin.docs=index.html
+plugin.ctagsinterface.main.CtagsInterfacePlugin.docs=index.html
 
 # options
 options.CtagsInterface.ctags=ctags
@@ -101,6 +104,7 @@ messages.CtagsInterface.queryType=Query Type:
 messages.CtagsInterface.callImmediately=Call query immediately (without waiting for input):
 messages.CtagsInterface.dirs=Source trees:
 messages.CtagsInterface.archives=Source archives:
+messages.CtagsInterface.tagFiles=Tag Files:
 messages.CtagsInterface.projects=Projects:
 messages.CtagsInterface.trackProjectList=Automatically add new projects and remove deleted projects
 messages.CtagsInterface.autoUpdateProjects=Automatically update tags when projects are changed

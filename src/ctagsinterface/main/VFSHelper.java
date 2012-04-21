@@ -30,6 +30,15 @@ public class VFSHelper {
 		}
 		return true;
 	}
+    static public boolean checkTagFileVFS(String tagFile) {
+        String fileName = getFileName(tagFile);
+        String[] fileSplit = fileName.split("\\.");
+        if(fileSplit.length>=1) {
+            if(fileSplit[fileSplit.length-1].equals("tag"))
+                return true;
+        }
+        return false;
+	}
 	static public void listArchive(Object session, Component c,
 		String path, Vector<String> list, boolean filesOnly)
 	{

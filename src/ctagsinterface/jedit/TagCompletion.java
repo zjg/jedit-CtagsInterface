@@ -26,7 +26,6 @@ public class TagCompletion {
 
 	private View view;
 	private String prefix;
-	private String language;
 
 	public static void complete(View view, String prefix)
 	{
@@ -136,7 +135,6 @@ public class TagCompletion {
 	{
 		this.view = view;
 		this.prefix = prefix;
-		this.language = getLanguage(view);
 	}
 
 	public String getLanguage(View view)
