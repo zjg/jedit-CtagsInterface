@@ -108,7 +108,7 @@ public class GeneralOptionPane extends AbstractOptionPane {
 			public void actionPerformed(ActionEvent ae) {
 				if (matchLanguage.isSelected()) {
 					JOptionPane.showMessageDialog(null,
-						jEdit.getProperty(MESSAGE + "matchLanguageMessage"));    
+						jEdit.getProperty(MESSAGE + "matchLanguageMessage"));	
 				}
 			}
 		});

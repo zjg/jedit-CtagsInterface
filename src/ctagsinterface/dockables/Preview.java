@@ -143,7 +143,7 @@ public class Preview extends JPanel implements DefaultFocusComponent,
 		});
 		toolbar.add(wrap);
 		text = new PreviewTextArea();
-        text.getBuffer().setProperty("folding","explicit");
+		text.getBuffer().setProperty("folding","explicit");
 		textPanel.add(text, BorderLayout.CENTER);
 		textPanel.add(text, BorderLayout.CENTER);
 		EditPane.initPainter(text.getPainter());
@@ -349,7 +349,7 @@ public class Preview extends JPanel implements DefaultFocusComponent,
 
 	private final class TagListCellRenderer extends DefaultListCellRenderer {
 		//private Font tagListFont = new Font("Monospaced", Font.PLAIN, 12);
-        
+		
 		public Component getListCellRendererComponent(JList list, Object value,
 				int index, boolean isSelected, boolean cellHasFocus) {
 			JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index,
@@ -389,7 +389,7 @@ public class Preview extends JPanel implements DefaultFocusComponent,
 				if (line > -1)
 					s.append(":" + line);
 				s.append("  (" + MiscUtilities.abbreviate(f.getParent()) + ")");
-            }
+			}
 			return s.toString();
 		}
 	}

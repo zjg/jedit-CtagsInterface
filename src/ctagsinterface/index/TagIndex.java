@@ -82,7 +82,7 @@ public class TagIndex
 		PROJECT("Project"),
 		DIRECTORY("Directory"),
 		ARCHIVE("Archive"),
-        TAGFILE("TagFile"),
+		TAGFILE("TagFile"),
 		MISC("Misc");
 		private OriginType(String name)
 		{
@@ -186,7 +186,7 @@ public class TagIndex
 		});
 	}
 
-    public Vector<String> getOrigins(OriginType type)
+	public Vector<String> getOrigins(OriginType type)
 	{
 		Vector<String> originsList = new Vector<String>();
 		getOrigins(type, originsList);

@@ -34,9 +34,9 @@ public class TagFilesOptionPane extends AbstractOptionPane
 	static public final String MESSAGE = CtagsInterfacePlugin.MESSAGE;
 	static public final String TagFiles = OPTION + "TagFiles.";
 	private JList tagFiles;
-    private DefaultListModel tagFilesModel;
+	private DefaultListModel tagFilesModel;
 
-    public TagFilesOptionPane()
+	public TagFilesOptionPane()
 	{
 		super("CtagsInterface-TagFiles");
 		setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -69,17 +69,17 @@ public class TagFilesOptionPane extends AbstractOptionPane
 					return;
 				String tagFilePath = chooser.getSelectedFiles()[0];
 				if (!VFSHelper.checkTagFileVFS(tagFilePath)) {
-                    Macros.message(jEdit.getActiveView(), "File name needs to end with \".tag\"");
-                    return;
-                }
-                if (!tagFilesModel.contains(tagFilePath))
-                    tagFilesModel.addElement(tagFilePath);
+					Macros.message(jEdit.getActiveView(), "File name needs to end with \".tag\"");
+					return;
+				}
+				if (!tagFilesModel.contains(tagFilePath))
+					tagFilesModel.addElement(tagFilePath);
 			}
 		});
 
 		remove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-                int i = tagFiles.getSelectedIndex();
+				int i = tagFiles.getSelectedIndex();
 				if (i >= 0)
 					tagFilesModel.removeElementAt(i);
 			}
@@ -87,7 +87,7 @@ public class TagFilesOptionPane extends AbstractOptionPane
 
 		tag.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-                int i = tagFiles.getSelectedIndex();
+				int i = tagFiles.getSelectedIndex();
 				if (i >= 0) {
 					String tagFile = (String) tagFilesModel.getElementAt(i);
 					CtagsInterfacePlugin.addTagFile(tagFile);
@@ -116,5 +116,5 @@ public class TagFilesOptionPane extends AbstractOptionPane
 		Vector<String> tagFiles = new Vector<String>();
 		CtagsInterfacePlugin.getIndex().getOrigins(OriginType.TAGFILE, tagFiles);
 		return tagFiles;
-    }
+	}
 }

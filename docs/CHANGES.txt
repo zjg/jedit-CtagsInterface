@@ -1,4 +1,28 @@
 Changes:
+Version 2.2.1: Requires jEdit 4.5, Java 1.6, SuperAbbrevs 2.0pre5, Lucene 2.8, Completion 0.3. 
+  Optional: ProjectViewer 3.4.2, Navigator 2.4
+  - Add option to only provide tooltips and completion suggestions when they're from sources that match the language of the current buffer
+  - Add option pane to add tag files to/remove tag files from the index 
+  - Add option pane to add/remove tag files as project dependencies
+  - Restrict project dependency options to existing dependencies
+  
+Version 2.2: Requires jEdit 4.5, Java 1.6, SuperAbbrevs 1.0, Lucene 2.8, Completion 0.3. 
+  Optional: ProjectViewer 3.4.0, Navigator 2.3
+  - Add option to not show the progress dockable automatically.
+  
+Version 2.1.1: Requires jEdit 4.5, Java 1.5, SuperAbbrevs 0.32, LucenePlugin 2.6.1 
+  and Completion 0.2. Optional: ProjectViewer 2.9, Navigator 2.2.0.0
+  
+  - Updated the build to use the new lucene jars from LucenePlugin. 
+  - Updated the tag candidate that is used by CodeComplete.
+  - Got rid of a compilation warning.
+  - Added code to use the Completion plugin for completions.
+  - Added progress indication for the Ctags execution.
+  
+Version 2.1: Requires jEdit 4.4pre1, Java 1.5, SuperAbbrevs 0.32 and
+  LucenePlugin 2.5. Optional: ProjectViewer 2.9, Navigator 2.2.0.0
+  
+  - Use a separate class for the AutoJump message, to allow the plugin to be used without Navigator.
 
 Version 2.0: Requires jEdit 4.4pre1, Java 1.5, SuperAbbrevs 0.32 and
   LucenePlugin 2.5. Optional: ProjectViewer 2.9, Navigator 2.2.0.0

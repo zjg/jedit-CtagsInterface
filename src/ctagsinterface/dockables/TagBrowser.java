@@ -256,9 +256,9 @@ public class TagBrowser extends JPanel
 	{
 		
 		@Override
-	    protected void configureTreeCellRendererComponent(JTree tree,
-	    	Object value, boolean sel, boolean expanded, boolean leaf,
-	    	int row, boolean hasFocus)
+		protected void configureTreeCellRendererComponent(JTree tree,
+			Object value, boolean sel, boolean expanded, boolean leaf,
+			int row, boolean hasFocus)
 		{
 			setOpenIcon(null);
 			setClosedIcon(null);

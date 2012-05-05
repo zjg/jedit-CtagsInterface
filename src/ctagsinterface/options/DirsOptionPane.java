@@ -90,8 +90,8 @@ public class DirsOptionPane extends AbstractOptionPane
 					return;
 				String dir = chooser.getSelectedFiles()[0];
 				if (dirsModel.contains(MiscUtilities.resolveSymlinks(dir)))
-				    return;
-                dirsModel.addElement(MiscUtilities.resolveSymlinks(dir));
+					return;
+				dirsModel.addElement(MiscUtilities.resolveSymlinks(dir));
 			}
 		});
 		remove.addActionListener(new ActionListener() {
