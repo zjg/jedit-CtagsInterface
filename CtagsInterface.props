@@ -9,7 +9,7 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.description=\
 	Among this plugin's capabilities are:\
 	- Going to the definition of the highlighted function (Jump to tag)\
 	- Browsing the tree of definitions (tags) of all project files (Tag Index\
-	  browser)\
+	  browser)
 
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.0=jdk 1.6
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.1=jedit 04.05.99.00
