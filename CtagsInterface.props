@@ -5,7 +5,11 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.name=CtagsInterface
 plugin.ctagsinterface.main.CtagsInterfacePlugin.author=Shlomy Reinstein
 plugin.ctagsinterface.main.CtagsInterfacePlugin.version=2.2.1
 plugin.ctagsinterface.main.CtagsInterfacePlugin.description=\
-	CtagsInterface provides common Ctags services to interested plugins.
+	CtagsInterface provides common Ctags services to interested plugins.\
+	Among this plugin's capabilities are:\
+	- Going to the definition of the highlighted function (Jump to tag)\
+	- Browsing the tree of definitions (tags) of all project files (Tag Index\
+	  browser)\
 
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.0=jdk 1.6
 plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.1=jedit 04.05.99.00
