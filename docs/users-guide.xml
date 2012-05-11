@@ -52,6 +52,17 @@
  </para>
 
  <literallayout> --languages=c,c++,java,python </literallayout>
+ 
+ <para>
+  When the option to 'Match tags with language of current buffer' is selected 
+  tooltips and completion suggestions will only be shown from tags whose language 
+  matches that of the file in the current buffer. This is done according to file 
+  extension and the mapping can be seen by calling ctags with the 
+ <literal>--list-maps</literal> option. If the source file's language hasn't 
+  been tagged nothing will be shown, to fix this retag your source files including 
+  the 'l' flag in the ctags <literal>--fields</literal> option.
+ </para>
+ 
 </chapter>
  <chapter id="tagdbs">
    <title> Tagging Projects, Source Trees/Archives and Tag Files</title>

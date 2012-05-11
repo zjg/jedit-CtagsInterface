@@ -108,7 +108,7 @@ public class GeneralOptionPane extends AbstractOptionPane {
 			public void actionPerformed(ActionEvent ae) {
 				if (matchLanguage.isSelected()) {
 					JOptionPane.showMessageDialog(null,
-						jEdit.getProperty(MESSAGE + "matchLanguageMessage"));	
+						jEdit.getProperty(MESSAGE + "matchLanguageMessage"));
 				}
 			}
 		});
@@ -215,7 +215,7 @@ public class GeneralOptionPane extends AbstractOptionPane {
 		return jEdit.getBooleanProperty(COMPLETE_DESC, true);
 	}
 	public static boolean getMatchLanguage() {
-		return jEdit.getBooleanProperty(MATCH_LANGUAGE, true);
+		return jEdit.getBooleanProperty(MATCH_LANGUAGE, false);
 	}
 	public static boolean getPreviewVerticalSplit() {
 		return jEdit.getBooleanProperty(PREVIEW_VERTICAL_SPLIT, true);
