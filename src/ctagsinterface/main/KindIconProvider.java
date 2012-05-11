@@ -22,12 +22,12 @@ public class KindIconProvider {
 				iconName = "unknown.png";
 			URL url = Tag.class.getClassLoader().getResource(
 					"icons/" + iconName);
-	        try {
-	            icon = new ImageIcon(url);
-	        }
-	        catch (Exception e) {
-	        	e.printStackTrace();
-	        }
+			try {
+				icon = new ImageIcon(url);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 			if (icon != null)
 				icons.put(kind, icon);
 		}

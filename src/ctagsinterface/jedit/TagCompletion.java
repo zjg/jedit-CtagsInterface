@@ -19,12 +19,14 @@ import ctagsinterface.index.TagIndex;
 import ctagsinterface.main.CtagsInterfacePlugin;
 import ctagsinterface.main.KindIconProvider;
 import ctagsinterface.main.Tag;
+import ctagsinterface.main.LanguageMap;
+import ctagsinterface.options.GeneralOptionPane;
 
 public class TagCompletion {
 
 	private View view;
 	private String prefix;
-	
+
 	public static void complete(View view, String prefix)
 	{
 		final TagCompletion completion = new TagCompletion(view,
@@ -49,14 +51,14 @@ public class TagCompletion {
 		else
 			completion.complete(tags.get(0));
 	}
-	
+
 	class TagCandidates implements Candidates
 	{
 		private Vector<Tag> tags;
 		private Vector<Tag> shownTags;
 		private DefaultListCellRenderer renderer;
 		private TagCompletionPopup popup;
-		
+
 		@SuppressWarnings("serial")
 		public TagCandidates(final Vector<Tag> tags,
 			TagCompletionPopup popup)
@@ -84,7 +86,7 @@ public class TagCompletion {
 				}
 			};
 		}
-		
+
 		public int indexForKey(char ch)
 		{
 			if (Character.isDigit(ch))
@@ -128,13 +130,20 @@ public class TagCompletion {
 			return true;
 		}
 	}
-	
+
 	public TagCompletion(View view, String prefix)
 	{
 		this.view = view;
 		this.prefix = prefix;
 	}
-	
+
+	public String getLanguage(View view)
+	{
+		LanguageMap langMap = CtagsInterfacePlugin.getLangMap();
+		String language = langMap.getLanguage(view);
+		return language;
+	}
+
 	public String getCompletionString(Tag tag)
 	{
 		StringBuffer sb = new StringBuffer();
@@ -147,7 +156,7 @@ public class TagCompletion {
 			sb.append(" - " + namespace);
 		return sb.toString();
 	}
-	
+
 	public Vector<Tag> getCompletions()
 	{
 		String q = TagIndex._NAME_FLD + ":" + prefix + "*";
@@ -203,5 +212,5 @@ public class TagCompletion {
 		String abbrev = createAbbrev(sig);
 		SuperAbbrevs.expandAbbrev(view, abbrev, null);
 	}
-	
+
 }

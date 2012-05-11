@@ -96,6 +96,8 @@ public class Progress extends JPanel
 				tab = new ProgressTab(logger);
 				tabs.addTab(logger.name(), tab);
 				progressTabs.put(logger, tab);
+				int count = tabs.getTabCount();
+				tabs.setSelectedIndex(count - 1);
 			}
 		}
 		return tab;

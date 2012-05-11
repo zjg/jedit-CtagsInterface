@@ -52,23 +52,34 @@
  </para>
 
  <literallayout> --languages=c,c++,java,python </literallayout>
+ 
+ <para>
+  When the option to 'Match tags with language of current buffer' is selected 
+  tooltips and completion suggestions will only be shown from tags whose language 
+  matches that of the file in the current buffer. This is done according to file 
+  extension and the mapping can be seen by calling ctags with the 
+ <literal>--list-maps</literal> option. If the source file's language hasn't 
+  been tagged nothing will be shown, to fix this retag your source files including 
+  the 'l' flag in the ctags <literal>--fields</literal> option.
+ </para>
+ 
 </chapter>
  <chapter id="tagdbs">
-   <title> Tagging Projects and Source Trees </title>
+   <title> Tagging Projects, Source Trees/Archives and Tag Files</title>
 
    <para>
     CtagsInterface uses a Lucene index to keep track of tag data from multiple
-    projects and directory trees. The
+    projects, directory trees/archives and tag files. The
     <guimenuitem>Plugin Options - CtagsInterface</guimenuitem> provides
-    dialogs for adding projects and directory trees that should be indexed.
+    dialogs for adding projects, directory trees/archives and tag filesthat should be indexed.
    </para>
 
    <para>
-    The first step is to add the projects and source trees that you want to be
+    The first step is to add the projects, source trees/archives or tag files that you want to be
     tagged in the index. Tagging is done in the background, you can continue
     working with jEdit meanwhile. The tagging progress is shown in the
     <guilabel>Progress</guilabel> dockable, in a tab of a tabbed pane. When
-    done, you can lookup tags from the projects and source trees.
+    done, you can lookup tags from the projects, source trees/archives and tag files.
    </para>
 
    <para>
@@ -78,9 +89,10 @@
    </para>
 
    <para>
-    Similarly, you can add source trees from the
-    <guimenuitem>Plugin options - CtagsInterface - Source Trees</guimenuitem>,
-    or from the file system browser context menu:
+    Similarly, you can add source trees/archives from the
+    <guimenuitem>Plugin options - CtagsInterface - Source Trees</guimenuitem>, and tag files from the
+    <guimenuitem>Plugin options - CtagsInterface - Tag Files</guimenuitem>.
+    You can also add source trees from the file system browser context menu:
     <guimenuitem>Plugins - Add source tree to tag index</guimenuitem>.
    </para>
 
@@ -104,7 +116,7 @@
    <para>
     By editing the properties of the current project, you can see a
     <guilabel>Dependencies</guilabel> pane, which allows you to set the
-    related projects or source trees on an individual project basis. While
+    related projects, source trees/archives or tag files on an individual project basis. While
     running the Tag Preview, or performing a Jump to Tag while working in a
     project that has dependencies set, CtagsInterface should restrict its
     searches to tag data from only those projects and directory trees.

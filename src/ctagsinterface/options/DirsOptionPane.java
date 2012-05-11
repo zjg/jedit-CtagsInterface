@@ -89,6 +89,8 @@ public class DirsOptionPane extends AbstractOptionPane
 				if (chooser.getSelectedFiles() == null)
 					return;
 				String dir = chooser.getSelectedFiles()[0];
+				if (dirsModel.contains(MiscUtilities.resolveSymlinks(dir)))
+					return;
 				dirsModel.addElement(MiscUtilities.resolveSymlinks(dir));
 			}
 		});
@@ -120,7 +122,7 @@ public class DirsOptionPane extends AbstractOptionPane
 				if (chooser.getSelectedFiles() == null)
 					return;
 				String archive = chooser.getSelectedFiles()[0];
-				if (! VFSHelper.checkArchiveVFS(archive))
+				if (! VFSHelper.checkArchiveVFS(archive) || archivesModel.contains(archive))
 					return;
 				archivesModel.addElement(archive);
 			}

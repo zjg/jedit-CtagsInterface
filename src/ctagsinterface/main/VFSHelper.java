@@ -30,6 +30,21 @@ public class VFSHelper {
 		}
 		return true;
 	}
+	
+	/**
+	 * Checks whether the file extension of the path provided equals "tag"
+	 * @param String path to tagFile
+	 * @return boolean true if extension equals "tag"
+	 */
+	static public boolean checkTagFileVFS(String tagFile) {
+		String fileName = getFileName(tagFile);
+		String[] fileSplit = fileName.split("\\.");
+		if(fileSplit.length>=1) {
+			if(fileSplit[fileSplit.length-1].equals("tag"))
+				return true;
+		}
+		return false;
+	}
 	static public void listArchive(Object session, Component c,
 		String path, Vector<String> list, boolean filesOnly)
 	{
