@@ -123,6 +123,7 @@ public class TagBrowser extends JPanel
 					new NamespaceMapper();
 				sorter = new NameSorter(caseSensitiveSorting.isSelected());
 				root.removeAllChildren();
+				model.setRoot(root);
 				Vector<Tag> tags = CtagsInterfacePlugin.runScopedQuery(
 					TagBrowser.this.view, "doctype:tag", 1000000);
 				Vector<Object> path = new Vector<Object>();
@@ -254,7 +255,7 @@ public class TagBrowser extends JPanel
 
 	private class TagTreeCellRenderer extends EnhancedTreeCellRenderer
 	{
-		
+
 		@Override
 		protected void configureTreeCellRendererComponent(JTree tree,
 			Object value, boolean sel, boolean expanded, boolean leaf,

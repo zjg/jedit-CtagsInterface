@@ -208,6 +208,27 @@ public class TagIndex
 		return sb.toString();
 	}
 
+	public void getFilesOfOrigin(OriginType type, final List<String> filePaths)
+	{
+		String query = DOCTYPE_FLD + ":" + TAG_DOC_TYPE + " AND " +
+			ORIGIN_FLD + ":" + type.name;
+		runQuery(query, MAX_RESULTS, new DocHandler()
+		{
+			public void handle(Document doc)
+			{
+				if (!filePaths.contains(doc.get(_PATH_FLD)))
+					filePaths.add(doc.get(_PATH_FLD));
+			}
+		});
+	}
+
+	public Vector<String> getFilesOfOrigin(OriginType type)
+	{
+		Vector<String> filePathsList = new Vector<String>();
+		getFilesOfOrigin(type, filePathsList);
+		return filePathsList;
+	}
+
 	public String appendOrigin(String origins, String origin)
 	{
 		if (origin.length() > origins.length())
@@ -223,22 +244,63 @@ public class TagIndex
 		return origins + origin;
 	}
 
-	public void deleteTagsFromSourceFile(String file)
+	/**
+	 * Completely delete tags from source file
+	 * @param path to file
+	 */
+	public void deleteTagsFromSourceFile(String filePath)
 	{
-		Query q = getQuery(_PATH_FLD + ":" + escape(file));
-		deleteQuery(q);
+		String s = _PATH_FLD + ":" + escape(filePath);
+		deleteQuery(s);
+	}
+
+	/**
+	 * Delete all tags from a source file of origin >>MISC:temp.
+	 * If a tag belongs to multiple origins, only remove the specified origin from it.
+	 * @param logger
+	 * @param path to file
+	 * @param origin
+	 */
+	public void deleteTagsFromSourceFileOfOrigin(Logger logger, String filePath)
+	{
+		Origin origin = getOrigin(OriginType.MISC, "temp", true);
+		deleteTagsFromSourceFileOfOrigin(logger, filePath, origin);
+	}
+
+	/**
+	 * Delete all tags from a source file that belong only to the specified origin.
+	 * If a tag belongs to multiple origins, only remove the specified origin from it.
+	 * @param logger
+	 * @param path to file
+	 * @param origin
+	 */
+	public void deleteTagsFromSourceFileOfOrigin(Logger logger, String filePath, Origin origin)
+	{
+		deleteTagsOfOriginAndFilePath(logger, origin, filePath);
 	}
 
 	public void deleteTag(Tag tag)
 	{
-		Query q = getQuery(_NAME_FLD + ":" + escape(tag.getName()) + " AND " +
-							_PATH_FLD + ":" + escape(tag.getFile()) + " AND " +
-							PATTERN_FLD + ":" + escape(tag.getPattern()));
-		deleteQuery(q);
+		String s = _NAME_FLD + ":" + escape(tag.getName()) + " AND " +
+					_PATH_FLD + ":" + escape(tag.getFile()) + " AND " +
+					PATTERN_FLD + ":" + escape(tag.getPattern());
+		deleteQuery(s);
 	}
 
 	public void deleteQuery(Query q)
 	{
+		if (q != null)
+		{
+			try {
+				writer.deleteDocuments(q);
+			}
+			catch (IOException e) { e.printStackTrace();}
+		}
+	}
+
+	public void deleteQuery(String s)
+	{
+		Query q = getQuery(s);
 		if (q != null)
 		{
 			try {
@@ -271,17 +333,35 @@ public class TagIndex
 	 */
 	public void deleteTagsOfOrigin(Logger logger, final Origin origin)
 	{
+		deleteTagsOfOriginAndFilePath(logger, origin, null);
+	}
+
+	/*
+	 * Delete all tags that belong only to the specified origin and source file if set.
+	 * If a tag belongs to multiple origins, only remove the specified origin from it.
+	 */
+	public void deleteTagsOfOriginAndFilePath(Logger logger, final Origin origin, String filePath)
+	{
+		// File path should only be included when dealing with MISC:temp
+		// used as proxy for origin ID
+		String filePathStr = "";
+		if(filePath!=null) {
+			if (origin.toString().equals(">>MISC:temp"))
+				filePathStr = " AND " + _PATH_FLD + ":" + filePath;
+		}
+
+		startActivity();
 		// Delete the tags which belong only to the specified origin.
 		// Using _ORIGIN_FLD for a precise match.
 		String s = DOCTYPE_FLD + ":" + TAG_DOC_TYPE + " AND " +
-			_ORIGIN_FLD + ":" + escape(origin.toString());
+			_ORIGIN_FLD + ":" + escape(origin.toString()) + filePathStr;
 		Query q = getQuery(s);
 		if (q != null)
 		{
 			try
 			{
 				writer.deleteDocuments(q);
-				writer.commit();	// Verify they won't show up again
+				writer.commit(); // Tags show up in next query if no commit here
 			}
 			catch (IOException e) { e.printStackTrace(); }
 		}
@@ -289,7 +369,7 @@ public class TagIndex
 		// Remove the specified origin from remaining tags.
 		// Using ORIGIN_FLD for a substring match.
 		s = DOCTYPE_FLD + ":" + TAG_DOC_TYPE + " AND " +
-			ORIGIN_FLD + ":" + escape(origin.toString());
+			ORIGIN_FLD + ":" + escape(origin.toString()) + filePathStr;
 		runQuery(s, MAX_RESULTS, new DocHandler()
 		{
 			public void handle(Document doc)
@@ -320,8 +400,13 @@ public class TagIndex
 				Query q = getQuery(queryStr);
 				if (q != null)
 				{
-					try { writer.deleteDocuments(q); }
-					catch (IOException e) { e.printStackTrace(); }
+					try
+					{
+						writer.deleteDocuments(q);
+					}
+					catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 				doc.removeField(ORIGIN_FLD);
 				doc.removeField(_ORIGIN_FLD);
@@ -330,6 +415,7 @@ public class TagIndex
 				catch (IOException e) { e.printStackTrace(); }
 			}
 		});
+		endActivity();
 	}
 
 	public static String escape(String s)

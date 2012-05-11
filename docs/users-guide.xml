@@ -65,35 +65,40 @@
  
 </chapter>
  <chapter id="tagdbs">
-   <title> Tagging Projects, Source Trees/Archives and Tag Files</title>
+   <title> Tagging Projects, Source Trees/Archives and Tag/Source Files</title>
 
    <para>
     CtagsInterface uses a Lucene index to keep track of tag data from multiple
-    projects, directory trees/archives and tag files. The
+    projects, directory trees/archives and tag/source files. The
     <guimenuitem>Plugin Options - CtagsInterface</guimenuitem> provides
-    dialogs for adding projects, directory trees/archives and tag filesthat should be indexed.
+    dialogs for adding projects, directory trees/archives and tag/source files 
+	that should be indexed.
    </para>
 
    <para>
-    The first step is to add the projects, source trees/archives or tag files that you want to be
-    tagged in the index. Tagging is done in the background, you can continue
-    working with jEdit meanwhile. The tagging progress is shown in the
+    The first step is to add the projects, source trees/archives or tag/source files
+	 that you want to be tagged in the index. Tagging is done in the background, you 
+	 can continue working with jEdit meanwhile. The tagging progress is shown in the
     <guilabel>Progress</guilabel> dockable, in a tab of a tabbed pane. When
-    done, you can lookup tags from the projects, source trees/archives and tag files.
+    done, you can lookup tags from the projects, source trees/archives and tag/source files.
    </para>
 
    <para>
     You can add projects two ways. From the ProjectViewer, right click on the
-    project and <guimenuitem>Add Project to index</guimenuitem>. Or, from
+    project and <guimenuitem>Add Project to index</guimenuitem>, or from
     <guimenuitem>Plugin Options - CtagsInterface - Projects</guimenuitem>.
    </para>
 
    <para>
-    Similarly, you can add source trees/archives from the
-    <guimenuitem>Plugin options - CtagsInterface - Source Trees</guimenuitem>, and tag files from the
-    <guimenuitem>Plugin options - CtagsInterface - Tag Files</guimenuitem>.
+    Similarly, you can add source trees/archives from
+    <guimenuitem>Plugin options - CtagsInterface - Source Trees</guimenuitem>. 
     You can also add source trees from the file system browser context menu:
     <guimenuitem>Plugins - Add source tree to tag index</guimenuitem>.
+	
+	Lastly tag and source files can be added from
+    <guimenuitem>Plugin options - CtagsInterface - Files</guimenuitem>
+	and the source file currently in your buffer can be added through 
+	the <guimenuitem>Add current file</guimenuitem> action.
    </para>
 
  </chapter>

@@ -31,6 +31,7 @@ import ctagsinterface.index.TagIndex.OriginType;
 @SuppressWarnings("serial")
 public class ProjectDependencies extends AbstractOptionPane
 {
+	// TODO: single file dependency
 	private static final String PROJECT_DEPENDENCY = "projectDependency";
 	private static final String TREE_DEPENDENCY = "treeDependency";
 	private static final String TAGFILE_DEPENDENCY = "tagFileDependency";

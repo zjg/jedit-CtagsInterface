@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ctagsinterface.projects;
 

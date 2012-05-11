@@ -22,7 +22,6 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.depend.6=plugin completion.Compl
 plugin.ctagsinterface.main.CtagsInterfacePlugin.docs=index.html
 
 # action labels
-ctags-interface-add-file.label=Add tag file...
 ctags-interface-print-tags.label=Print tags
 ctags-interface-print-tags-containing.label=Print tags with substring...
 ctags-interface-jump-to-tag.label=Jump to tag
@@ -30,13 +29,14 @@ ctags-interface-search-tag-by-substring.label=Search for a tag with substring...
 ctags-interface-search-tag-by-prefix.label=Search for a tag with prefix...
 ctags-interface-tag-all-projects.label=Tag all projects
 ctags-interface-complete-from-db.label=Suggest completion options
-ctags-interface-add-current-file.label=Tag current file
+ctags-interface-add-current-file.label=Add current file
+ctags-interface-update-current-file.label=Update current file
+ctags-interface-remove-current-file.label=Remove current file
 ctags-interface-run-query.label=Run a query (for debugging)
 ctags-interface-show-query-dialog.label=Show query dialog (for debugging)
 
 # menu items
 plugin.ctagsinterface.main.CtagsInterfacePlugin.menu=\
-	ctags-interface-add-file \
 	ctags-interface-jump-to-tag \
 	ctags-interface-search-tag-by-prefix \
 	ctags-interface-search-tag-by-substring \
@@ -48,6 +48,8 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.menu=\
 	ctags-interface-tag-all-projects \
 	- \
 	ctags-interface-add-current-file \
+	ctags-interface-update-current-file \
+	ctags-interface-remove-current-file \
 	- \
 	ctags-interface-run-query \
 	ctags-interface-show-query-dialog
@@ -56,7 +58,7 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.menu=\
 plugin.ctagsinterface.main.CtagsInterfacePlugin.option-group=CtagsInterface-General \
 	CtagsInterface-Actions \
 	CtagsInterface-Dirs \
-	CtagsInterface-TagFiles \
+	CtagsInterface-Files \
 	CtagsInterface-Projects
 options.CtagsInterface-General.label=General
 options.CtagsInterface-General.code=new ctagsinterface.options.GeneralOptionPane();
@@ -64,8 +66,8 @@ options.CtagsInterface-Actions.label=Actions
 options.CtagsInterface-Actions.code=new ctagsinterface.options.ActionsOptionPane();
 options.CtagsInterface-Dirs.label=Source trees
 options.CtagsInterface-Dirs.code=new ctagsinterface.options.DirsOptionPane();
-options.CtagsInterface-TagFiles.label=Tag Files
-options.CtagsInterface-TagFiles.code=new ctagsinterface.options.TagFilesOptionPane();
+options.CtagsInterface-Files.label=Files
+options.CtagsInterface-Files.code=new ctagsinterface.options.FilesOptionPane();
 options.CtagsInterface-Projects.label=Projects
 options.CtagsInterface-Projects.code=new ctagsinterface.options.ProjectsOptionPane();
 
@@ -109,6 +111,7 @@ messages.CtagsInterface.callImmediately=Call query immediately (without waiting 
 messages.CtagsInterface.dirs=Source trees:
 messages.CtagsInterface.archives=Source archives:
 messages.CtagsInterface.tagFiles=Tag Files:
+messages.CtagsInterface.sourceFiles=Source Files:
 messages.CtagsInterface.projects=Projects:
 messages.CtagsInterface.trackProjectList=Automatically add new projects and remove deleted projects
 messages.CtagsInterface.autoUpdateProjects=Automatically update tags when projects are changed

@@ -36,7 +36,7 @@ public class DirsOptionPane extends AbstractOptionPane
 	DefaultListModel dirsModel;
 	private DefaultListModel archivesModel;
 	private JList archives;
-	
+
 	public DirsOptionPane()
 	{
 		super("CtagsInterface-Dirs");
@@ -75,9 +75,9 @@ public class DirsOptionPane extends AbstractOptionPane
 		JButton removeArchive = new RolloverButton(GUIUtilities.loadIcon("Minus.png"));
 		buttons.add(removeArchive);
 		JButton tagArchive = new JButton("Tag");
-		buttons.add(tagArchive);
+		buttons.add(tagArchive);// TODO: tagArchive action?
 		addComponent(buttons);
-		
+
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				VFSFileChooserDialog chooser = new VFSFileChooserDialog(
@@ -151,14 +151,14 @@ public class DirsOptionPane extends AbstractOptionPane
 		saveOrigins(OriginType.DIRECTORY, dirsModel);
 		saveOrigins(OriginType.ARCHIVE, archivesModel);
 	}
-	
+
 	static public Vector<String> getDirs()
 	{
 		Vector<String> dirs = new Vector<String>();
 		CtagsInterfacePlugin.getIndex().getOrigins(OriginType.DIRECTORY, dirs);
 		return dirs;
 	}
-	
+
 	static public Vector<String> getArchives()
 	{
 		Vector<String> archives = new Vector<String>();
