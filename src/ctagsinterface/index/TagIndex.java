@@ -502,6 +502,22 @@ public class TagIndex
 		catch (Exception e) { e.printStackTrace(); }
 	}
 
+	public boolean hasOrigin(Origin origin)
+	{
+		final boolean b[] = new boolean[1];
+		b[0] = false;
+		String query = DOCTYPE_FLD + ":" + ORIGIN_DOC_TYPE + " AND " +
+			TYPE_FLD + ":" + origin.type.name + " AND " + ORIGIN_ID_FLD + ":" +
+			escape(origin.id);
+		runQuery(query, 1, new DocHandler() {
+			public void handle(Document doc)
+			{
+				b[0] = true;
+			}
+		});
+		return b[0];
+	}
+
 	public boolean hasSourceFile(String file)
 	{
 		final boolean b[] = new boolean[1];

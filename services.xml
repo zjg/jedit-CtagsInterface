@@ -6,6 +6,9 @@
 	<SERVICE CLASS="projectviewer.action.Action" NAME="Add to database">
 		new ctagsinterface.projects.ProjectAddAction();
 	</SERVICE>
+	<SERVICE CLASS="projectviewer.action.Action" NAME="Add/Update in database">
+		new ctagsinterface.projects.ProjectAddUpdateAction();
+	</SERVICE>	
 	<SERVICE CLASS="projectviewer.action.Action" NAME="Remove from database">
 		new ctagsinterface.projects.ProjectRemoveAction();
 	</SERVICE>
