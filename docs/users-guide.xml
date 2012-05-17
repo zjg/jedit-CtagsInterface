@@ -53,16 +53,6 @@
 
  <literallayout> --languages=c,c++,java,python </literallayout>
  
- <para>
-  When the option to 'Match tags with language of current buffer' is selected 
-  tooltips and completion suggestions will only be shown from tags whose language 
-  matches that of the file in the current buffer. This is done according to file 
-  extension and the mapping can be seen by calling ctags with the 
- <literal>--list-maps</literal> option. If the source file's language hasn't 
-  been tagged nothing will be shown, to fix this retag your source files including 
-  the 'l' flag in the ctags <literal>--fields</literal> option.
- </para>
- 
 </chapter>
  <chapter id="tagdbs">
    <title> Tagging Projects, Source Trees/Archives and Tag/Source Files</title>
@@ -101,6 +91,12 @@
 	the <guimenuitem>Add current file</guimenuitem> action.
    </para>
 
+   <para>
+	Tags can be removed from the index using the options pane, actions in 
+	<guimenuitem>Plugins - CtagsInterface</guimenuitem> or the ProjectViewer 
+	context menu
+   </para>
+   
  </chapter>
 
  <chapter id="lookup">
@@ -132,6 +128,16 @@
     source trees indexed in the tags database that are not related to each
     other.
    </para>
+   
+	<para>
+	In addition, when the option to 'Match tags with language of current buffer' is selected 
+	tooltips and completion suggestions will only be shown from tags whose language 
+	matches that of the file in the current buffer, which can be useful when working with
+	multiple languages. File extension is used to do this matching and the mapping can be 
+	seen by calling ctags with the <literal>--list-maps</literal> option. If the source 
+	file's language hasn't been tagged nothing will be shown, to fix this retag your 
+	source files including the 'l' flag in the ctags <literal>--fields</literal> option.
+	</para>
 
  </chapter>
 

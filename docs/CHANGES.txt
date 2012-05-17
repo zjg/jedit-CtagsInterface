@@ -13,6 +13,7 @@ Version 2.2.1: Requires jEdit 4.5, Java 1.6, SuperAbbrevs 1, Lucene 2.8, Complet
   - Fixed Tag Index Browser dockable refresh bug (#3525480)
   - Added "Update current file" and "Remove current file" actions
   - Merged add/remove project actions (#3525601)
+  - Added "Remove all tags" action (#3527302)
 
   [Jarek Czekalski]
   - Updated plugin's description

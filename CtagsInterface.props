@@ -29,6 +29,7 @@ ctags-interface-jump-to-tag.label=Jump to tag
 ctags-interface-search-tag-by-substring.label=Search for a tag with substring...
 ctags-interface-search-tag-by-prefix.label=Search for a tag with prefix...
 ctags-interface-tag-all-projects.label=Tag all projects
+ctags-interface-remove-all-tags.label=Remove all tags
 ctags-interface-complete-from-db.label=Suggest completion options
 ctags-interface-add-current-file.label=Add current file
 ctags-interface-update-current-file.label=Update current file
@@ -47,6 +48,8 @@ plugin.ctagsinterface.main.CtagsInterfacePlugin.menu=\
 	ctags-interface-browser \
 	- \
 	ctags-interface-tag-all-projects \
+	- \
+	ctags-interface-remove-all-tags \
 	- \
 	ctags-interface-add-current-file \
 	ctags-interface-update-current-file \
@@ -135,6 +138,7 @@ messages.CtagsInterface.parsing=Parsing tag file
 messages.CtagsInterface.autoCloseProgress=Automatically close progress tab when tagging is over
 messages.CtagsInterface.showProgress=Show progress dialog automatically
 messages.CtagsInterface.taskFinished=CtagsInterface background task finished.
+messages.CtagsInterface.removeAll=Warning: this will permently delete all the tags in your index.
 
 # projectviewer option pane
 plugin.projectviewer.ctagsinterface.main.CtagsInterfacePlugin.option-pane=CtagsInterface-ProjectDependencies

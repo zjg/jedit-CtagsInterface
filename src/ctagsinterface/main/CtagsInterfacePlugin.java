@@ -280,6 +280,31 @@ public class CtagsInterfacePlugin extends EditPlugin
 		index.deleteTagsFromSourceFileOfOrigin(logger, path);
 	}
 
+	static public void deleteAll(View view)
+	{
+		String msg = MESSAGE + "removeAll";
+		if( JOptionPane.OK_OPTION !=
+			JOptionPane.showConfirmDialog(view,
+				jEdit.getProperty(msg),
+				"Remove all tags",
+				JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.WARNING_MESSAGE))
+			return;
+
+		for(OriginType type : OriginType.values()) {
+			Vector<String> origins = new Vector<String>();
+			getIndex().getOrigins(type, origins);
+			for (int i = 0; i < origins.size(); i++) {
+				String id = origins.get(i);
+				Origin origin = getIndex().getOrigin(type, id, false);
+				Logger logger = getLogger(view, "Deleting " + type.name + " " + id);
+				deleteOrigin(logger, type, id, false);
+				//getIndex().deleteTagsOfOrigin(logger, origin);
+				//getIndex().deleteOriginOfOrigin(logger, origin);
+			}
+		}
+	}
+
 	public static void jumpToTags(final View view, List<Tag> tags)
 	{
 		if (tags == null || tags.size() == 0)
@@ -698,19 +723,38 @@ public class CtagsInterfacePlugin extends EditPlugin
 		deleteOrigin(logger, type, name);
 	}
 
+
+
 	// Deletes an origin with all associated data from the DB
 	public static void deleteOrigin(final Logger logger, final OriginType type,
 		final String name)
 	{
+		deleteOrigin(logger, type, name, true);
+	}
+
+	// Deletes an origin with all associated data from the DB
+	public static void deleteOrigin(final Logger logger, final OriginType type,
+		final String name, Boolean threaded)
+	{
+		if (!threaded) {
+			deleteOrigin(logger, index.getOrigin(type, name, false));
+			return;
+		}
+
 		addWorkRequest(name, new Task()
 		{
 			public void _run()
 			{
-				index.deleteOrigin(logger, index.getOrigin(type, name, false));
-				if (pvi != null && type == OriginType.PROJECT)
-					pvi.updateWatchers();
+				deleteOrigin(logger, index.getOrigin(type, name, false));
 			}
 		});
+	}
+
+	private static void deleteOrigin(final Logger logger, final Origin origin)
+	{
+		index.deleteOrigin(logger, origin);
+		if (pvi != null && origin.type == OriginType.PROJECT)
+			pvi.updateWatchers();
 	}
 
 	// Inserts a new origin to the DB, runs Ctags on it and adds the tags
