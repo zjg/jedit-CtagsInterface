@@ -18,7 +18,7 @@
    the license can be found in the file <filename>COPYING.DOC.txt</filename>
    included with jEdit.
   </para>
-
+  
  </legalnotice>
  </bookinfo>
 
@@ -55,22 +55,23 @@
  
 </chapter>
  <chapter id="tagdbs">
-   <title> Tagging Projects, Source Trees/Archives and Tag/Source Files</title>
+   <title> Tagging Projects, Trees, Archives and Source and Tag Files</title>
 
    <para>
     CtagsInterface uses a Lucene index to keep track of tag data from multiple
-    projects, directory trees/archives and tag/source files. The
-    <guimenuitem>Plugin Options - CtagsInterface</guimenuitem> provides
-    dialogs for adding projects, directory trees/archives and tag/source files 
-	that should be indexed.
+    origins (currently projects, trees, archives and source and tag files). 
+	<guimenuitem>Plugin Options - CtagsInterface</guimenuitem> provides three
+	panes for defining which origins should be indexed: 
+	<guimenuitem>Trees/Archives</guimenuitem>, 
+	<guimenuitem>Files</guimenuitem> and <guimenuitem>Projects</guimenuitem>.
    </para>
 
    <para>
-    The first step is to add the projects, source trees/archives or tag/source files
-	 that you want to be tagged in the index. Tagging is done in the background, you 
-	 can continue working with jEdit meanwhile. The tagging progress is shown in the
-    <guilabel>Progress</guilabel> dockable, in a tab of a tabbed pane. When
-    done, you can lookup tags from the projects, source trees/archives and tag/source files.
+    The first step is to add the origins that you want to be tagged. Tagging is 
+	done in the background, you can continue working with jEdit meanwhile. The 
+	tagging progress is shown in the <guilabel>Progress</guilabel> dockable, in 
+	a tab of a tabbed pane. When done, you can lookup tags from the origins you 
+	have added.
    </para>
 
    <para>
@@ -80,12 +81,12 @@
    </para>
 
    <para>
-    Similarly, you can add source trees/archives from
-    <guimenuitem>Plugin options - CtagsInterface - Source Trees</guimenuitem>. 
-    You can also add source trees from the file system browser context menu:
-    <guimenuitem>Plugins - Add source tree to tag index</guimenuitem>.
+    Similarly, you can add trees and archives from
+    <guimenuitem>Plugin options - CtagsInterface - Trees/Archives</guimenuitem>. 
+    You can also add trees from the file system browser context menu:
+    <guimenuitem>Plugins - Add tree to tag index</guimenuitem>.
 	
-	Lastly tag and source files can be added from
+	Lastly source and tag files can be added from
     <guimenuitem>Plugin options - CtagsInterface - Files</guimenuitem>
 	and the source file currently in your buffer can be added through 
 	the <guimenuitem>Add current file</guimenuitem> action.
@@ -104,67 +105,94 @@
 
    <para>
     By default, tag lookup will search the entire tag index for matching tags,
-    including all added projects and source trees.
+    including all added origins.
    </para>
 
    <para>
     When using jEdit with ProjectViewer, you might be working with a set of
     files, and have to frequently check another set of files that you are
     reusing. This means that you will probably want to restrict your search
-    to only the projects and source trees that are related to your project.
+    to only the origins that are related to your project.
    </para>
 
-   <para>
-    By editing the properties of the current project, you can see a
-    <guilabel>Dependencies</guilabel> pane, which allows you to set the
-    related projects, source trees/archives or tag files on an individual project basis. While
-    running the Tag Preview, or performing a Jump to Tag while working in a
-    project that has dependencies set, CtagsInterface should restrict its
-    searches to tag data from only those projects and directory trees.
-   </para>
+   <para> By editing the properties of the current project, you can see a
+   <guilabel>Dependencies</guilabel> pane, which allows you to set the related
+   projects, trees/archives or files on an individual project basis. While
+   running the Tag Preview, or performing a Jump to Tag while working in a
+   project that has dependencies set, CtagsInterface should restrict its
+   searches to tag data from only those dependencies. </para>
 
-   <para>
-    This is especially useful in the case where there are many projects /
-    source trees indexed in the tags database that are not related to each
-    other.
-   </para>
+   <para> This is especially useful in the case where there are many origins
+   indexed in the tags index that are not related to each other. </para>
    
-	<para>
-	In addition, when the option to 'Match tags with language of current buffer' is selected 
-	tooltips and completion suggestions will only be shown from tags whose language 
-	matches that of the file in the current buffer, which can be useful when working with
-	multiple languages. File extension is used to do this matching and the mapping can be 
-	seen by calling ctags with the <literal>--list-maps</literal> option. If the source 
-	file's language hasn't been tagged nothing will be shown, to fix this retag your 
-	source files including the 'l' flag in the ctags <literal>--fields</literal> option.
-	</para>
+	<para> In addition, when the option to 'Match tags with language of current
+	buffer' is selected searches will be restricted to tags whose language
+	matches that of the file in the current buffer. File extension is used to do
+	this matching and the mapping can be seen by calling ctags with the
+	<literal>--list-maps</literal> option. If the source file's language hasn't
+	been tagged and this option is selected searches will return nothing, to fix
+	this retag your source files including the 'l' flag in the ctags
+	<literal>--fields</literal> option. </para>
 
  </chapter>
 
  <chapter id="actions">
    <title> Actions </title>
 
-   <formalpara><title> Add tag File </title>
+   <formalpara><title> Add Current File </title>
    <para>
-    Adds an already generated ctags file to the database.
+    Tags the file in the current buffer and adds it to the index.
+   </para>
+   </formalpara>
+   
+  <formalpara><title> Update Current File </title> <para> Updates the file in
+  the current buffer in the index, doesn't add the file as an origin if it's
+  already in the index. </para> </formalpara>
+   
+   <formalpara><title> Remove Current File </title> <para> Removes the tags from
+   the file in the current buffer and their origin from the index. </para>
+   </formalpara>
+
+   <formalpara><title> Remove All Tags </title>
+   <para>
+    Removes all tags and their origins from the index.
    </para>
    </formalpara>
 
-   <formalpara><title> Tag all projects </title>
+   <formalpara><title> Jump to tag </title> <para> Opens the file that the tag
+   currently under the caret originates from and moves the caret to the tag
+   definition within that file. </para> </formalpara>
+
+   <formalpara><title> Search tag by substring </title> <para> Provides a dialog
+   to conduct a substring search of the tag index, results returned in a pop-up.
+   </para> </formalpara>
+
+   <formalpara><title> Search tag by prefix </title> <para> Provides a dialog to
+   conduct a prefix search of the tag index, results returned in a pop-up.
+   </para> </formalpara>
+   
+  <formalpara><title> Tag all projects </title>
    <para>
     This does exactly what it says: it goes through
     <emphasis role="bold">every</emphasis> project that ProjectViewer knows
-    about, and tags their files, adding the tag data to the embedded database.
+    about, and tags their files, adding the tag data to the embedded index.
    </para>
    </formalpara>
-
+   
    <formalpara><title> Suggest completion options </title>
    <para>
-    Suggests code-completion options from the tag database. This includes
+    Suggests code-completion options from the tag index. This includes
     completion of function calls, using SuperAbbrevs for conveniently
     filling-in the parameter values.
    </para>
    </formalpara>
+   
+  <formalpara><title> Run Query </title> <para> Provides a dialog for running
+  queries on the tag index using the Lucene query syntax. </para> </formalpara>
+
+  <formalpara><title> Show Query Dialog </title> <para> Provides a dialog and
+  results pane for running queries on the tag index using the Lucene query
+  syntax. </para> </formalpara>
 
    <section id="dynamic-actions">
    <title> Dynamic Actions </title>
@@ -173,7 +201,7 @@
     In addition to these built-in actions, CtagsInterface allows you to create
     dynamic Actions, which are custom Lucene queries, which can be bound to
     keyboard shortcuts. Each such Lucene query should retrieve a list of tags
-    from the database. There are 3 types of dynamic actions:
+    from the index. There are 3 types of dynamic actions:
     <orderedlist>
     <listitem><para>
      Jump to tag - execute the query and show the list of tags it retrieved
