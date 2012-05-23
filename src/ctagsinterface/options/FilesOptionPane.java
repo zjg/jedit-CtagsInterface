@@ -67,7 +67,7 @@ public class FilesOptionPane extends AbstractOptionPane
 			public void actionPerformed(ActionEvent ae) {
 				VFSFileChooserDialog chooser = new VFSFileChooserDialog(
 					GUIUtilities.getParentDialog(FilesOptionPane.this),
-					jEdit.getActiveView(), System.getProperty("user.home"),
+					jEdit.getActiveView(), null,
 					VFSBrowser.OPEN_DIALOG, false, false);
 				chooser.setTitle("Select tag file");
 				chooser.setVisible(true);
@@ -119,7 +119,7 @@ public class FilesOptionPane extends AbstractOptionPane
 			public void actionPerformed(ActionEvent ae) {
 				VFSFileChooserDialog chooser = new VFSFileChooserDialog(
 					GUIUtilities.getParentDialog(FilesOptionPane.this),
-					jEdit.getActiveView(), System.getProperty("user.home"),
+					jEdit.getActiveView(), null,
 					VFSBrowser.OPEN_DIALOG, false, false);
 				chooser.setTitle("Select tag file");
 				chooser.setVisible(true);

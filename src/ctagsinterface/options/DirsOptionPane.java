@@ -82,7 +82,7 @@ public class DirsOptionPane extends AbstractOptionPane
 			public void actionPerformed(ActionEvent ae) {
 				VFSFileChooserDialog chooser = new VFSFileChooserDialog(
 					GUIUtilities.getParentDialog(DirsOptionPane.this),
-					jEdit.getActiveView(), System.getProperty("user.home"),
+					jEdit.getActiveView(), null,
 					VFSBrowser.CHOOSE_DIRECTORY_DIALOG, false, false);
 				chooser.setTitle("Select root of source tree");
 				chooser.setVisible(true);
@@ -115,7 +115,7 @@ public class DirsOptionPane extends AbstractOptionPane
 			public void actionPerformed(ActionEvent ae) {
 				VFSFileChooserDialog chooser = new VFSFileChooserDialog(
 					GUIUtilities.getParentDialog(DirsOptionPane.this),
-					jEdit.getActiveView(), System.getProperty("user.home"),
+					jEdit.getActiveView(), null,
 					VFSBrowser.OPEN_DIALOG, false, false);
 				chooser.setTitle("Select source archive");
 				chooser.setVisible(true);
