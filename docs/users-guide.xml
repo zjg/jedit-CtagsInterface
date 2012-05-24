@@ -45,8 +45,10 @@
   tree, unless you tell it otherwise.
   Under <literal>Plugin Options - CtagsInterface - General</literal> you will
   find a field for specifying
-  <emphasis role="bold">Ctags Invocation Options</emphasis>. By adding extra
-  options to this field, as shown below, you can specify that only certain
+  <emphasis role="bold">Ctags Invocation Options</emphasis>. The options required
+  for smooth running of CtagsInterface are 
+  <literallayout>--fields=+anzKiSl</literallayout>, in addition, 
+  as shown below, you can specify that only certain
   file types are scanned and indexed. Read the manual pages of exuberant ctags
   for more information about the options available.
  </para>

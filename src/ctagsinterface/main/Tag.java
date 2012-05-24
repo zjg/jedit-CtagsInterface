@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 public class Tag {
- 
+
 	private String name;
 	private String file;
 	private int line;
@@ -27,7 +27,7 @@ public class Tag {
 	}
 	public void setExtensions(Hashtable<String, String> extensions) {
 		this.extensions = extensions;
-		kind = extensions.containsKey(KIND_KEY) ? extensions.get(KIND_KEY) : null; 
+		kind = extensions.containsKey(KIND_KEY) ? extensions.get(KIND_KEY) : "";
 		line = extensions.containsKey(LINE_KEY) ? Integer.valueOf(extensions.get(LINE_KEY)) : -1;
 	}
 	public void setAttachments(Hashtable<String, String> attachments) {
