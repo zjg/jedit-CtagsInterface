@@ -36,6 +36,12 @@ public class Progress extends JPanel
 
 	public Progress(View view)
 	{
+		String height = "ctags-interface-progress.height";
+		if (jEdit.getProperty(height)==null)
+			jEdit.setProperty(height, "400");
+		String width = "ctags-interface-progress.width";
+		if (jEdit.getProperty(width)==null)
+			jEdit.setProperty(width, "400");
 		this.view = view;
 		setLayout(new BorderLayout());
 		tabs = new JTabbedPane();

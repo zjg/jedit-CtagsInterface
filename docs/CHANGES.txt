@@ -14,7 +14,8 @@ Version 2.2.1: Requires jEdit 4.5, Java 1.6, SuperAbbrevs 1, Lucene 2.8, Complet
   - Added "Update current file" and "Remove current file" actions
   - Merged add/remove project actions (#3525601)
   - Added "Remove all tags" action (#3527302)
-  - Put Tag Browser dockable "Group by" and "Sorting" options in menu's (#3501911
+  - Put Tag Browser dockable "Group by" and "Sorting" options in menu's (#3501911)
+  - Default size 400x400 for tagging progress dockable (#3501899)
   
   [Jarek Czekalski]
   - Updated plugin's description
