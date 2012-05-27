@@ -81,7 +81,8 @@ ctags-interface-tag-list.label=Tag List
 ctags-interface-preview.title=Tag Preview
 ctags-interface-preview.label=Tag Preview
 ctags-interface-progress.title=Tagging Progress
-ctags-interface-progress.label=Tagging Progress
+ctags-interface-progress.defaultHeight=400
+ctags-interface-progress.defaultWidth=400
 ctags-interface-browser.title=Tag Index browser
 ctags-interface-browser.label=Tag Index browser
 
