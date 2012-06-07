@@ -29,7 +29,6 @@ import javax.swing.event.DocumentListener;
 
 import org.gjt.sp.jedit.GUIUtilities;
 import org.gjt.sp.jedit.View;
-import org.gjt.sp.jedit.Debug;
 
 import ctagsinterface.index.TagIndex;
 import ctagsinterface.main.TagListFilterMenu.TagListModelHandler;
@@ -137,10 +136,6 @@ public class QuickSearchTagDialog extends JDialog {
 						tags.dispatchEvent(e);
 					} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 						setVisible(false);
-						if (Debug.FORCE_DIALOG_DISPOSE)
-						{
-						   dispose();
-						}
 					} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 						jumpToSelected();
 					}
@@ -220,13 +215,7 @@ public class QuickSearchTagDialog extends JDialog {
 			menu.setTags(tags);
 		}
 		if (model.isEmpty())
-		{
 			window.setVisible(false);
-			if (Debug.FORCE_DIALOG_DISPOSE)
-			{
-				window.dispose();
-			}
-		}
 		else
 		{
 			tags.setVisibleRowCount(Math.min(10, model.size()));
@@ -250,8 +239,6 @@ public class QuickSearchTagDialog extends JDialog {
 		}
 		window.setVisible(false);	// Initially hide the tag list window, even if b is true
 		super.setVisible(b);
-		if (!b && Debug.FORCE_DIALOG_DISPOSE)
-			dispose();
 	}
 
 	private static class QuickSearchTag
