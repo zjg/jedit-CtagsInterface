@@ -21,6 +21,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JCheckBoxMenuItem;
 
 import org.gjt.sp.jedit.View;
 import org.gjt.sp.util.EnhancedTreeCellRenderer;
@@ -38,11 +42,11 @@ public class TagBrowser extends JPanel
 	private DefaultMutableTreeNode root;
 	private IMapper mapper;
 	private ISorter sorter;
-	private JRadioButton kind, namespace;
+	private JRadioButtonMenuItem kind, namespace;
 	private Runnable repaintTree;
 	private Runnable updateTree;
 	private boolean repaintTreeMarked;
-	private JCheckBox caseSensitiveSorting;
+	private JCheckBoxMenuItem caseSensitiveSorting;
 
 	public TagBrowser(View view)
 	{
@@ -74,25 +78,37 @@ public class TagBrowser extends JPanel
 			}
 		});
 		add(new JScrollPane(tree), BorderLayout.CENTER);
-		JPanel top = new JPanel();
-		add(top, BorderLayout.NORTH);
-		JPanel mapPanel = new JPanel();
-		top.add(mapPanel);
-		mapPanel.add(new JLabel("Group by:"));
-		kind = new JRadioButton("Kind");
-		mapPanel.add(kind);
-		namespace = new JRadioButton("Namespace");
-		mapPanel.add(namespace);
+
+		JMenuBar groupMenuBar = new JMenuBar();
+		JMenu groupMenu = new JMenu("Group by");
+		kind = new JRadioButtonMenuItem("Kind");
+		namespace = new JRadioButtonMenuItem("Namespace");
+		groupMenu.add(kind);
+		groupMenu.add(namespace);
+		groupMenuBar.add(groupMenu);
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(kind);
 		bg.add(namespace);
-		kind.setSelected(true);
-		JPanel sortPanel = new JPanel();
-		top.add(sortPanel);
-		caseSensitiveSorting = new JCheckBox("Case-sensitive sorting");
-		sortPanel.add(caseSensitiveSorting);
+
+		JMenuBar sortMenuBar = new JMenuBar();
+		JMenu sortMenu = new JMenu("Sorting");
+		caseSensitiveSorting = new JCheckBoxMenuItem("Case-sensitive");
+		sortMenu.add(caseSensitiveSorting);
+		sortMenuBar.add(sortMenu);
+
+		JPanel mapPanel = new JPanel();
+		mapPanel.add(groupMenuBar);
+		mapPanel.add(sortMenuBar);
+
 		JButton update = new JButton("Refresh");
-		top.add(update);
+
+		JPanel top = new JPanel(new BorderLayout());
+		add(top, BorderLayout.NORTH);
+
+		// update first so has highest z-order.
+		top.add(update, BorderLayout.EAST);
+		top.add(mapPanel, BorderLayout.WEST);
+
 		ActionListener listener = new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -123,6 +139,7 @@ public class TagBrowser extends JPanel
 					new NamespaceMapper();
 				sorter = new NameSorter(caseSensitiveSorting.isSelected());
 				root.removeAllChildren();
+				model.setRoot(root);
 				Vector<Tag> tags = CtagsInterfacePlugin.runScopedQuery(
 					TagBrowser.this.view, "doctype:tag", 1000000);
 				Vector<Object> path = new Vector<Object>();
@@ -254,7 +271,7 @@ public class TagBrowser extends JPanel
 
 	private class TagTreeCellRenderer extends EnhancedTreeCellRenderer
 	{
-		
+
 		@Override
 		protected void configureTreeCellRendererComponent(JTree tree,
 			Object value, boolean sel, boolean expanded, boolean leaf,

@@ -1,10 +1,23 @@
 Changes:
 Version 2.2.1: Requires jEdit 4.5, Java 1.6, SuperAbbrevs 1, Lucene 2.8, Completion 0.3. 
   Optional: ProjectViewer 3.4.2, Navigator 2.4
-  - Add option to only provide tooltips and completion suggestions when they're from sources that match the language of the current buffer
-  - Add option pane to add tag files to/remove tag files from the index 
-  - Add option pane to add/remove tag files as project dependencies
-  - Restrict project dependency options to existing dependencies
+  [Tom Power]
+  - Added an option to only provide tooltips and completion suggestions when 
+    they're from sources that match the language of the current buffer
+  - Added an option pane to add tag files to/remove tag files from the index
+  - Added an option pane to add/remove tag files as project dependencies
+  - Restricted project dependency options to existing dependencies
+  - Added an option pane to add/remove individual source files and files
+    previously added using "Add tag file..." action (#3525480)
+  - Removed "Add tag file..." action (#3525480)
+  - Fixed Tag Index Browser dockable refresh bug (#3525480)
+  - Added "Update current file" and "Remove current file" actions
+  - Merged add/remove project actions (#3525601)
+  - Added "Remove all tags" action (#3527302)
+  - Put Tag Browser dockable "Group by" and "Sorting" options in menu's (#3501911)
+  - Default size 400x400 for tagging progress dockable (#3501899)
+  
+  [Jarek Czekalski]
   - Updated plugin's description
   
 Version 2.2: Requires jEdit 4.5, Java 1.6, SuperAbbrevs 1.0, Lucene 2.8, Completion 0.3. 

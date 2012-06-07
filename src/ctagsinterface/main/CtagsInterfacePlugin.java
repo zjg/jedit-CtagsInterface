@@ -48,6 +48,7 @@ import ctagsinterface.options.GeneralOptionPane;
 import ctagsinterface.options.ProjectsOptionPane;
 import ctagsinterface.projects.ProjectDependencies;
 import ctagsinterface.projects.ProjectWatcher;
+import org.gjt.sp.jedit.Macros;
 
 public class CtagsInterfacePlugin extends EditPlugin
 {
@@ -153,7 +154,7 @@ public class CtagsInterfacePlugin extends EditPlugin
 		private HashSet<String> files = new HashSet<String>();
 		private Origin origin;
 		private String originsStr;
-		private Boolean remove;
+		private Boolean remove = false;
 
 		public TagFileHandler(Origin origin)
 		{
@@ -166,26 +167,23 @@ public class CtagsInterfacePlugin extends EditPlugin
 			this.remove = remove;
 		}
 
-
 		public void processTag(Tag t)
 		{
-
-
 			String file = t.getFile();
 
-			if(remove)
-			{
+			if(remove) {
 				index.deleteTag(t);
 				return;
 			}
 
+			String originStr = this.origin != null ? origin.toString() : "";
 
 			if (! files.contains(file))
 			{
 				// Add the new origin to the current list of origins, if not
 				// yet included.
 				originsStr = index.getOriginsOfFile(file);
-				originsStr = index.appendOrigin(originsStr, origin.toString());
+				originsStr = index.appendOrigin(originsStr, originStr);
 				index.deleteTagsFromSourceFile(file);
 				files.add(file);
 			}
@@ -224,23 +222,88 @@ public class CtagsInterfacePlugin extends EditPlugin
 	}
 
 	// Remove tags from tag file from the DB
-	static public void deleteTagsFromTagFile(View view, String tagFile)
+	static public void deleteTagsFromTagFile(View view, String tagFilePath)
 	{
-		if (tagFile == null || tagFile.length() == 0)
+		if (tagFilePath == null || tagFilePath.length() == 0)
 			return;
-		if(!new File(tagFile).exists())
+		if(!new File(tagFilePath).exists())
 			return;
-		Logger logger = getLogger(view, "Removing tag file " + tagFile);
-		index.deleteTagsOfOrigin(logger, index.getOrigin(OriginType.TAGFILE, tagFile, true));
+		Logger logger = getLogger(view, "Removing tag file " + tagFilePath);
+		index.deleteTagsOfOrigin(logger, index.getOrigin(OriginType.TAGFILE, tagFilePath, true));
 	}
 
-	// Action: Add current file to the DB
+	// Action: Add current file to the DB with origin
 	static public void addCurrentFile(View view)
 	{
 		String path = view.getBuffer().getPath();
-		TagFileHandler handler = new TagFileHandler(
-			index.getOrigin(TagIndex.OriginType.MISC, MISC_ORIGIN_ID, true));
-		tagSourceTree(null, path, handler);
+		addFile(view, path);
+	}
+
+	static public void addFile(View view, String path)
+	{
+		addFile(view, path, index.getOrigin(TagIndex.OriginType.MISC, MISC_ORIGIN_ID, true));
+	}
+
+	static public void addFile(View view, String path, Origin origin)
+	{
+		Logger logger = getLogger(view, "Adding source file " + path);
+		TagFileHandler handler = new TagFileHandler(origin, false);
+		tagSourceTree(logger, path, handler);
+	}
+
+	// Action: update current file in the DB, doesn't add origin
+	static public void updateCurrentFile(View view)
+	{
+		String path = view.getBuffer().getPath();
+		updateFile(view, path);
+	}
+
+	static public void updateFile(View view, String path)
+	{
+		if (getIndex().getOriginsOfFile(path).isEmpty())
+			return;
+		Logger logger = getLogger(view, "Adding source file " + path);
+		TagFileHandler handler = new TagFileHandler(null, false); // null runs ctags with same origins
+		tagSourceTree(logger, path, handler);
+	}
+
+	// Action: remove current file from the DB
+	static public void deleteCurrentFile(View view)
+	{
+		String path = view.getBuffer().getPath();
+		deleteFile(view, path);
+	}
+
+
+	static public void deleteFile(View view, String path)
+	{
+		Logger logger = getLogger(view, "Removing source file " + path);
+		index.deleteTagsFromSourceFileOfOrigin(logger, path);
+	}
+
+	static public void deleteAll(View view)
+	{
+		String msg = MESSAGE + "removeAll";
+		if( JOptionPane.OK_OPTION !=
+			JOptionPane.showConfirmDialog(view,
+				jEdit.getProperty(msg),
+				"Remove all tags",
+				JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.WARNING_MESSAGE))
+			return;
+
+		for(OriginType type : OriginType.values()) {
+			Vector<String> origins = new Vector<String>();
+			getIndex().getOrigins(type, origins);
+			for (int i = 0; i < origins.size(); i++) {
+				String id = origins.get(i);
+				Origin origin = getIndex().getOrigin(type, id, false);
+				Logger logger = getLogger(view, "Deleting " + type.name + " " + id);
+				deleteOrigin(logger, type, id, false);
+				//getIndex().deleteTagsOfOrigin(logger, origin);
+				//getIndex().deleteOriginOfOrigin(logger, origin);
+			}
+		}
 	}
 
 	public static void jumpToTags(final View view, List<Tag> tags)
@@ -662,19 +725,46 @@ public class CtagsInterfacePlugin extends EditPlugin
 		tagOrigin(logger, origin);
 	}
 
+	public static void deleteOrigin(OriginType type,
+		String name)
+	{
+		View view = jEdit.getActiveView();
+		Logger logger = getLogger(view, "Delete " + type.name + " " + name);
+		deleteOrigin(logger, type, name);
+	}
+
+
+
 	// Deletes an origin with all associated data from the DB
 	public static void deleteOrigin(final Logger logger, final OriginType type,
 		final String name)
 	{
+		deleteOrigin(logger, type, name, true);
+	}
+
+	// Deletes an origin with all associated data from the DB
+	public static void deleteOrigin(final Logger logger, final OriginType type,
+		final String name, Boolean threaded)
+	{
+		if (!threaded) {
+			deleteOrigin(logger, index.getOrigin(type, name, false));
+			return;
+		}
+
 		addWorkRequest(name, new Task()
 		{
 			public void _run()
 			{
-				index.deleteOrigin(logger, index.getOrigin(type, name, false));
-				if (pvi != null && type == OriginType.PROJECT)
-					pvi.updateWatchers();
+				deleteOrigin(logger, index.getOrigin(type, name, false));
 			}
 		});
+	}
+
+	private static void deleteOrigin(final Logger logger, final Origin origin)
+	{
+		index.deleteOrigin(logger, origin);
+		if (pvi != null && origin.type == OriginType.PROJECT)
+			pvi.updateWatchers();
 	}
 
 	// Inserts a new origin to the DB, runs Ctags on it and adds the tags

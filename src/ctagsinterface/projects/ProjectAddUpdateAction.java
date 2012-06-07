@@ -13,19 +13,19 @@ import ctagsinterface.index.TagIndex.OriginType;
 import ctagsinterface.main.CtagsInterfacePlugin;
 import ctagsinterface.main.Logger;
 
-public class ProjectAddAction extends Action
+public class ProjectAddUpdateAction extends Action
 {
 	private String name;
 
-	public ProjectAddAction()
+	public ProjectAddUpdateAction()
 	{
-		super("add-project-tags");
+		super("add-update-oroject-tags");
 	}
 
 	@Override
 	public String getText()
 	{
-		return "Add project to tag index";
+		return "Update project in tag index";
 	}
 
 	public void actionPerformed(ActionEvent arg0)
@@ -40,7 +40,6 @@ public class ProjectAddAction extends Action
 
 	@Override
 	public void prepareForNode(VPTNode node) {
-
 		if (node == null) {
 			cmItem.setVisible(false);
 			return;
@@ -52,8 +51,8 @@ public class ProjectAddAction extends Action
 		VPTProject p = (VPTProject) node;
 		name = p.getName();
 		Origin origin = CtagsInterfacePlugin.getIndex().getOrigin(OriginType.PROJECT, name, false);
-		cmItem.setVisible(true);
+		cmItem.setVisible(false);
 		if (CtagsInterfacePlugin.getIndex().hasOrigin(origin))
-			cmItem.setVisible(false);
+			cmItem.setVisible(true);
 	}
 }

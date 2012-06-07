@@ -95,6 +95,8 @@ public class TagTooltip extends TextAreaExtension
 	public String getToolTipText(final int x, final int y) {
 		int offset = textArea.xyToOffset(x, y);
 		JEditBuffer buffer = textArea.getBuffer();
+		if((offset < 0) || (offset > buffer.getLength()))
+			return null;
 		int line = buffer.getLineOfOffset(offset);
 		int index = offset - buffer.getLineStartOffset(line);
 		final String tag = CtagsInterfacePlugin.getTagAt(textArea, line,

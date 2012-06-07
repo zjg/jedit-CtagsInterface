@@ -1,6 +1,7 @@
 package ctagsinterface.dockables;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -33,6 +34,7 @@ public class Progress extends JPanel
 	private HashMap<Logger, ProgressTab> progressTabs =
 		new HashMap<Logger, ProgressTab>();
 	private View view;
+	static public final String PROGRESS = "ctags-interface-progress";
 
 	public Progress(View view)
 	{
@@ -55,6 +57,15 @@ public class Progress extends JPanel
 			}
 		});
 	}
+
+	@Override
+	public Dimension getPreferredSize()
+	{
+	  return new Dimension(
+			  Integer.parseInt(jEdit.getProperty(PROGRESS + ".defaultHeight")),
+			  Integer.parseInt(jEdit.getProperty(PROGRESS + ".defaultWidth")));
+	}
+
 	public void add(final Logger logger, final String s)
 	{
 		ThreadUtilities.runInDispatchThread(new Runnable()

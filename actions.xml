@@ -6,9 +6,19 @@
 			ctagsinterface.main.CtagsInterfacePlugin.addCurrentFile(view);
 		</CODE>
 	</ACTION>
-	<ACTION NAME="ctags-interface-add-file" NO_REPEAT="TRUE">
+	<ACTION NAME="ctags-interface-update-current-file" NO_REPEAT="TRUE">
 		<CODE>
-			ctagsinterface.main.CtagsInterfacePlugin.addTagFile(view);
+			ctagsinterface.main.CtagsInterfacePlugin.updateCurrentFile(view);
+		</CODE>
+	</ACTION>
+	<ACTION NAME="ctags-interface-remove-current-file" NO_REPEAT="TRUE">
+		<CODE>
+			ctagsinterface.main.CtagsInterfacePlugin.deleteCurrentFile(view);
+		</CODE>
+	</ACTION>
+	<ACTION NAME="ctags-interface-remove-all-tags" NO_REPEAT="TRUE">
+		<CODE>
+			ctagsinterface.main.CtagsInterfacePlugin.deleteAll(view);
 		</CODE>
 	</ACTION>
 	<ACTION NAME="ctags-interface-jump-to-tag" NO_REPEAT="TRUE">

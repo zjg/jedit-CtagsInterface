@@ -36,7 +36,7 @@ public class DirsOptionPane extends AbstractOptionPane
 	DefaultListModel dirsModel;
 	private DefaultListModel archivesModel;
 	private JList archives;
-	
+
 	public DirsOptionPane()
 	{
 		super("CtagsInterface-Dirs");
@@ -75,14 +75,14 @@ public class DirsOptionPane extends AbstractOptionPane
 		JButton removeArchive = new RolloverButton(GUIUtilities.loadIcon("Minus.png"));
 		buttons.add(removeArchive);
 		JButton tagArchive = new JButton("Tag");
-		buttons.add(tagArchive);
+		buttons.add(tagArchive);// TODO: tagArchive action?
 		addComponent(buttons);
-		
+
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				VFSFileChooserDialog chooser = new VFSFileChooserDialog(
 					GUIUtilities.getParentDialog(DirsOptionPane.this),
-					jEdit.getActiveView(), System.getProperty("user.home"),
+					jEdit.getActiveView(), null,
 					VFSBrowser.CHOOSE_DIRECTORY_DIALOG, false, false);
 				chooser.setTitle("Select root of source tree");
 				chooser.setVisible(true);
@@ -115,7 +115,7 @@ public class DirsOptionPane extends AbstractOptionPane
 			public void actionPerformed(ActionEvent ae) {
 				VFSFileChooserDialog chooser = new VFSFileChooserDialog(
 					GUIUtilities.getParentDialog(DirsOptionPane.this),
-					jEdit.getActiveView(), System.getProperty("user.home"),
+					jEdit.getActiveView(), null,
 					VFSBrowser.OPEN_DIALOG, false, false);
 				chooser.setTitle("Select source archive");
 				chooser.setVisible(true);
@@ -151,14 +151,14 @@ public class DirsOptionPane extends AbstractOptionPane
 		saveOrigins(OriginType.DIRECTORY, dirsModel);
 		saveOrigins(OriginType.ARCHIVE, archivesModel);
 	}
-	
+
 	static public Vector<String> getDirs()
 	{
 		Vector<String> dirs = new Vector<String>();
 		CtagsInterfacePlugin.getIndex().getOrigins(OriginType.DIRECTORY, dirs);
 		return dirs;
 	}
-	
+
 	static public Vector<String> getArchives()
 	{
 		Vector<String> archives = new Vector<String>();
